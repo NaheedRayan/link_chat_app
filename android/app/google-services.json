@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "90907534592",
+    "project_id": "link-chat-app",
+    "storage_bucket": "link-chat-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90907534592:android:329b26d4b09b5822547fe5",
+        "android_client_info": {
+          "package_name": "com.example.link_chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90907534592-5rje6h75rp5blou66cfvjql2ac5hso7i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1TWtp9DtjwPwu6SBTBQrgE8BfbJeQSA0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90907534592-5rje6h75rp5blou66cfvjql2ac5hso7i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "90907534592-enen5vdesilch86qbfpuh8tlit3flc73.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.link"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

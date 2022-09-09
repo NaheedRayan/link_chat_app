@@ -55,6 +55,8 @@ class MyApp extends StatelessWidget {
     return CupertinoApp(
       // home: HomePage(),
       home: Hello(),
+      // home: EditNumber(),
+      // home: SelectCountry(),
       theme: CupertinoThemeData(
         brightness: Brightness.light ,
         primaryColor: Color(0xFF08C187),

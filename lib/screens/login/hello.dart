@@ -1,11 +1,13 @@
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:link_chat_app/components/lets_start.dart';
 import 'package:link_chat_app/components/logo.dart';
 import 'package:link_chat_app/components/terms_and_conditions.dart';
 
 import '../../components/blur_image_page_scaffold.dart';
+import 'edit_number.dart';
 
 class Hello extends StatelessWidget {
   const Hello({Key? key}) : super(key: key);
@@ -34,8 +36,8 @@ class Hello extends StatelessWidget {
         ),
         TermsAndConditions(onPressed: () {}),
         LetsStart(onPressed: () {
-          // Navigator.push(
-          //     // context, CupertinoPageRoute(builder: (context) => EditNumber()));
+          Navigator.push(
+              context, CupertinoPageRoute(builder: (context) => EditNumber()));
         })
       ],
     );

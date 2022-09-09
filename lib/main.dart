@@ -10,6 +10,8 @@ import 'package:link_chat_app/screens/SettingsScreen.dart';
 import 'package:link_chat_app/screens/calls.dart';
 import 'package:link_chat_app/screens/chats.dart';
 import 'package:link_chat_app/screens/people.dart';
+import 'package:link_chat_app/screens/login/hello.dart';
+
 //
 // void main() {
 //   runApp(const MyApp());
@@ -51,7 +53,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      home: HomePage(),
+      // home: HomePage(),
+      home: Hello(),
       theme: CupertinoThemeData(
         brightness: Brightness.light ,
         primaryColor: Color(0xFF08C187),

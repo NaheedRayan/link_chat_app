@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:link_chat_app/components/logo.dart';
 import 'package:link_chat_app/screens/login/select_country.dart';
 
+import 'verify_number.dart';
+
 class EditNumber extends StatefulWidget {
   const EditNumber({Key? key}) : super(key: key);
 
@@ -13,7 +15,7 @@ class EditNumber extends StatefulWidget {
 
 class _EditNumberState extends State<EditNumber> {
 
-  var _enterPhoneNumber ;
+  var _enterPhoneNumber = TextEditingController();
   Map<String ,dynamic> data = {"name": "Bangladesh", "code" : "+880"};
   Map<String ,dynamic> dataResult = {"name": "Bangladesh", "code" : "+880"};
 
@@ -83,12 +85,12 @@ class _EditNumberState extends State<EditNumber> {
               child: CupertinoButton.filled(
                   child: Text("Request code"),
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     CupertinoPageRoute(
-                    //         builder: (context) => VerifyNumber(
-                    //           number: data['code']! + _enterPhoneNumber.text,
-                    //         )));
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => VerifyNumber(
+                              number: data['code']! + _enterPhoneNumber.text,
+                            )));
                   }),
             )
           ],

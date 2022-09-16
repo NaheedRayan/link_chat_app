@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -7,7 +8,15 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-          child: Text('Settings')
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CupertinoButton(child: Text("Logout"), onPressed: (){
+                FirebaseAuth.instance.signOut();
+              })
+            ],
+          )
       ),
     );
   }

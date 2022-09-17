@@ -9,6 +9,7 @@ class Chats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
+
         stream: FirebaseFirestore.instance.collection('chats').snapshots(),
         builder: (BuildContext context,AsyncSnapshot<QuerySnapshot>snapshot){
           if(snapshot.hasError){
@@ -20,6 +21,7 @@ class Chats extends StatelessWidget {
 
           if(snapshot.hasData){
             return CustomScrollView(
+
               slivers: [
                 CupertinoSliverNavigationBar(
                   largeTitle: Text("Chats"),

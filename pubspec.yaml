@@ -41,6 +41,9 @@ dependencies:
   firebase_storage: ^10.3.7
   firebase_core: ^1.21.1
   cloud_functions: ^3.3.6
+
+  # add this line to your dependencies
+  fluttertoast: ^8.0.9
   
 
 dev_dependencies:

@@ -99,11 +99,11 @@ class HomePage extends StatelessWidget {
       tabBar: CupertinoTabBar(
         items: const [
           BottomNavigationBarItem(
-              label: "Chats", icon: Icon(CupertinoIcons.chat_bubble_fill)),
+              label: "Chats", icon: Icon(CupertinoIcons.chat_bubble_2_fill)),
           BottomNavigationBarItem(
-              label: "Call", icon: Icon(CupertinoIcons.phone)),
+              label: "Calls", icon: Icon(CupertinoIcons.videocam_circle_fill)),
           BottomNavigationBarItem(
-              label: "People", icon: Icon(CupertinoIcons.person_alt_circle)),
+              label: "People", icon: Icon(CupertinoIcons.person_2_fill)),
           BottomNavigationBarItem(
               label: "Settings", icon: Icon(CupertinoIcons.settings_solid)),
         ],

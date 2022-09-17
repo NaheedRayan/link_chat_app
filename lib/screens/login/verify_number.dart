@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:link_chat_app/screens/login/user_name.dart';
 
 enum Status { Waiting, Error }
 
 class VerifyNumber extends StatefulWidget {
   const VerifyNumber({Key? key, this.number}) : super(key: key);
-
   final number;
 
   @override
@@ -15,9 +15,9 @@ class VerifyNumber extends StatefulWidget {
 }
 
 class _VerifyNumberState extends State<VerifyNumber> {
+
   final phoneNumber;
   _VerifyNumberState(this.phoneNumber);
-
   var _status = Status.Waiting;
   var _verificationId;
   var _textEditingController = TextEditingController();
@@ -33,16 +33,49 @@ class _VerifyNumberState extends State<VerifyNumber> {
   Future _verifyPhoneNumber() async {
     _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
-        verificationCompleted: (phonesAuthCredentials) async {},
-        verificationFailed: (verificationFailed) async {print("sorry");},
+        verificationCompleted: (phonesAuthCredentials) async {Fluttertoast.showToast(
+              msg: "Verified",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );},
+        verificationFailed: (verificationFailed) async {print("Sorry . Verification failed");Fluttertoast.showToast(
+              msg: "Sorry,verfication failed",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );},
         codeSent: (verificationId, resendingToken) async {
           print(verificationId);
           setState(() {
-            print("something");
+            print("Got the verification ID");
+            Fluttertoast.showToast(
+                msg: "Got the verification ID",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 2,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
             this._verificationId = verificationId;
           });
         },
-        codeAutoRetrievalTimeout: (verificationId) async {});
+        codeAutoRetrievalTimeout: (verificationId) async {Fluttertoast.showToast(
+              msg: "Timeout",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );});
   }
 
   Future _sendCodeToFirebase({String? code}) async {
@@ -102,6 +135,15 @@ class _VerifyNumberState extends State<VerifyNumber> {
                           if (value.length == 6) {
                             //perform the auth verification
                             _sendCodeToFirebase(code: value);
+                            Fluttertoast.showToast(
+                                msg: "Sending Code to auth",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 2,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
                           }
                         },
                         textAlign: TextAlign.center,

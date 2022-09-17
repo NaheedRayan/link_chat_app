@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:link_chat_app/main.dart';
 
 class UserName extends StatefulWidget {
@@ -35,12 +36,22 @@ class _UserNameState extends State<UserName> {
         ),
         CupertinoButton.filled(
             child: Text("Continue"),
-            onPressed: () {
-              FirebaseAuth.instance.currentUser
-                  ?.updateProfile(displayName: _text.text);
+            onPressed: () async {
+              // await FirebaseAuth.instance.currentUser
+              //     ?.updateProfile(displayName: _text.text);
 
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => HomePage()));
+              // await FirebaseAuth.instance.currentUser?.updateDisplayName(_text.text) ;
+
+              Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(builder: (context) => HomePage()), (route) => false);
+              Fluttertoast.showToast(
+                  msg: "Welcome",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 2,
+                  backgroundColor: Colors.green,
+                  textColor: Colors.white,
+                  fontSize: 16.0
+              );
             })
       ],
     ));

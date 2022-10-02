@@ -44,7 +44,10 @@ dependencies:
 
   # add this line to your dependencies
   fluttertoast: ^8.0.9
-  
+
+  # For encryption
+  asn1lib: ^1.1.0
+  fast_rsa: ^3.4.7
 
 dev_dependencies:
   flutter_test:

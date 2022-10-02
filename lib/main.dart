@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:link_chat_app/screens/SettingsScreen.dart';
 import 'package:link_chat_app/screens/calls.dart';
 import 'package:link_chat_app/screens/chats.dart';
-import 'package:link_chat_app/screens/login/user_name.dart';
 import 'package:link_chat_app/screens/login/verify_number.dart';
 import 'package:link_chat_app/screens/people.dart';
 import 'package:link_chat_app/screens/login/hello.dart';
@@ -68,49 +67,126 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (loggedin == true)
-        ? CupertinoApp(
+        ? MaterialApp(
             home: HomePage(), //got to main home page
-            theme: CupertinoThemeData(
+            theme: ThemeData(
               brightness: Brightness.light,
               primaryColor: Color(0xFF08C187),
             ),
+            // theme: CupertinoThemeData(
+            //   brightness: Brightness.light,
+            //   primaryColor: Color(0xFF08C187),
+            // ),
             debugShowCheckedModeBanner: false,
           )
-        : CupertinoApp(
+        : MaterialApp(
             home: Hello(), //start from hello page
-            theme: CupertinoThemeData(
+            theme: ThemeData(
               brightness: Brightness.light,
               primaryColor: Color(0xFF08C187),
             ),
+            // theme: CupertinoThemeData(
+            //   brightness: Brightness.light,
+            //   primaryColor: Color(0xFF08C187),
+            // ),
             debugShowCheckedModeBanner: false,
           );
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   var screens = [Chats(), Calls(), People(), SettingsScreen()];
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 3: Settings',
+      style: optionStyle,
+    ),
+  ];
+
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        child: CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        items: const [
-          BottomNavigationBarItem(
-              label: "Chats", icon: Icon(CupertinoIcons.chat_bubble_2_fill)),
-          BottomNavigationBarItem(
-              label: "Calls", icon: Icon(CupertinoIcons.videocam_circle_fill)),
-          BottomNavigationBarItem(
-              label: "People", icon: Icon(CupertinoIcons.person_2_fill)),
-          BottomNavigationBarItem(
-              label: "Settings", icon: Icon(CupertinoIcons.settings_solid)),
-        ],
+    return Scaffold(
+      // appBar: AppBar(
+      //   title: Text("Well hello"),
+      // ),
+      body: Center(
+        // child: _widgetOptions.elementAt(_selectedIndex),
+        child: screens[_selectedIndex],
       ),
-      tabBuilder: (BuildContext context, int index) {
-        return screens[index];
-      },
-    ));
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        //for more than 3 items
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_rounded),
+            label: 'Chats',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.video_camera_front),
+            label: 'Calls',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people_alt),
+            label: 'People',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+
+        currentIndex: _selectedIndex,
+        // selectedItemColor: Colors.amber[800],
+        selectedItemColor: Theme.of(context).primaryColor,
+        onTap: _onItemTapped,
+      ),
+    );
+    // return CupertinoPageScaffold(
+    //     child: CupertinoTabScaffold(
+    //   tabBar: CupertinoTabBar(
+    //     items: const [
+    //       BottomNavigationBarItem(
+    //           label: "Chats", icon: Icon(CupertinoIcons.chat_bubble_2_fill)),
+    //       BottomNavigationBarItem(
+    //           label: "Calls", icon: Icon(CupertinoIcons.videocam_circle_fill)),
+    //       BottomNavigationBarItem(
+    //           label: "People", icon: Icon(CupertinoIcons.person_2_fill)),
+    //       BottomNavigationBarItem(
+    //           label: "Settings", icon: Icon(CupertinoIcons.settings_solid)),
+    //     ],
+    //   ),
+    //   tabBuilder: (BuildContext context, int index) {
+    //     return screens[index];
+    //   },
+    // ));
   }
 }

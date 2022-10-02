@@ -19,48 +19,50 @@ class _SelectCountryState extends State<SelectCountry> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        child: CustomScrollView(
-      slivers: [
-        CupertinoSliverNavigationBar(
-          largeTitle: Text("Select Country"),
-          previousPageTitle: "Edit Number",
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: CupertinoSearchTextField(
-              onChanged: (value) {
-                setState(() {
-                  searchValue = value;
-                });
+    return Material(
+      child: CupertinoPageScaffold(
+          child: CustomScrollView(
+        slivers: [
+          CupertinoSliverNavigationBar(
+            largeTitle: Text("Select Country"),
+            previousPageTitle: "Edit Number",
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: CupertinoSearchTextField(
+                onChanged: (value) {
+                  setState(() {
+                    searchValue = value;
+                  });
 
-              },
-              controller: _searchController,
+                },
+                controller: _searchController,
+              ),
             ),
           ),
-        ),
-        SliverList(
-          delegate: SliverChildListDelegate((data != null)
-              ? data!
-                  .where((e) => e['name']
-                      .toString()
-                      .toLowerCase()
-                      .contains(searchValue.toLowerCase()))
-                  .map((e) => CupertinoListTile(
-                        onTap: () {
-                          print(e['name']);
-                          Navigator.pop(context,
-                              {"name": e['name'], "code": e['dial_code']});
-                        },
-                        title: Text(e['name']),
-                        trailing: Text(e['dial_code']),
-                      ))
-                  .toList()
-              : [Center(child: Text("Loading"))]),
-        )
-      ],
-    ));
+          SliverList(
+            delegate: SliverChildListDelegate((data != null)
+                ? data!
+                    .where((e) => e['name']
+                        .toString()
+                        .toLowerCase()
+                        .contains(searchValue.toLowerCase()))
+                    .map((e) => CupertinoListTile(
+                          onTap: () {
+                            print(e['name']);
+                            Navigator.pop(context,
+                                {"name": e['name'], "code": e['dial_code']});
+                          },
+                          title: Text(e['name']),
+                          trailing: Text(e['dial_code']),
+                        ))
+                    .toList()
+                : [Center(child: Text("Loading"))]),
+          )
+        ],
+      )),
+    );
   }
 
   @override

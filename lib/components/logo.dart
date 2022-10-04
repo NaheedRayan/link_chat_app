@@ -14,7 +14,7 @@ class Logo extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(radius)),
           shape: BoxShape.rectangle,
-          color: Colors.white.withOpacity(0.8)),
+          color: Colors.white),
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: Image(

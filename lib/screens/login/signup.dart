@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:link_chat_app/screens/login/edit_number.dart';
 import 'package:link_chat_app/screens/login/select_country.dart';
 import 'package:link_chat_app/screens/login/verify_number.dart';
@@ -20,6 +21,8 @@ class _SignUpState extends State<SignUp> {
   var _enterUsername = TextEditingController();
   var _enterEmail = TextEditingController();
 
+  bool isChecked = false;
+
   Map<String, dynamic> data = {"name": "Bangladesh", "code": "+880"};
   Map<String, dynamic> dataResult = {"name": "Bangladesh", "code": "+880"};
 
@@ -27,129 +30,139 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-          appBar: AppBar(
-            title: const Text('SignUp'),
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
+          // appBar: AppBar(
+          //   title: const Text('SignUp'),
+          //   backgroundColor: Theme.of(context).primaryColor,
+          // ),
+        backgroundColor: Colors.white,
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 150.0, 0.0, 0.0),
+              padding: const EdgeInsets.fromLTRB(25.0, 150.0, 25.0, 25.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Logo(width: 50.0, height: 50.0, radius: 25.0),
-                      Text("SignUp",
-                          style: TextStyle(
-                              color: Color(0xFF08C187).withOpacity(0.7),
-                              fontSize: 30))
-                    ],
-                  ),
-                  Text("Enter your phone number",
+
+                  Text("SignUp",
                       style: TextStyle(
-                          color: CupertinoColors.systemGrey.withOpacity(0.7),
-                          fontSize: 25)),
+                          color: Colors.black54,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                      )),
+                  Text("For Signing Up We need Your Personal Inforamtion",
+                      style: TextStyle(
+                          color: Colors.black26,
+                          fontSize: 16)),
                   SizedBox(
                     height: 20,
                   ),
-                  ListTile(
-                    onTap: () async {
-                      dataResult = await Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => SelectCountry()));
-                      setState(() {
-                        if (dataResult != null) data = dataResult;
-                      });
-                    },
-                    title: Text(data["name"],
-                        style:
-                            TextStyle(color: Color(0xFF08C187), fontSize: 25)),
+
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 5.0),
+                    child: Text("Name",
+                        style: TextStyle(color: Colors.black26, fontSize: 16)),
+                  ),
+                  TextField(
+                      keyboardType: TextInputType.text,
+                      controller: _enterUsername,
+                      decoration: InputDecoration(
+                        // labelText: 'Phone Number',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                      ),
+
+                      style: TextStyle(
+                        fontSize: 20,
+                      )),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 5.0),
+                    child: Text("Email",
+                        style: TextStyle(color: Colors.black26, fontSize: 16)),
                   ),
 
-                  Divider(
-                      height: 1, color: Colors.grey, endIndent: 16, indent: 16),
-                  // THIS
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
-                          child: Text(data["code"],
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  color: CupertinoColors.secondaryLabel)),
-                        ),
-                        Expanded(
-                          child: CupertinoTextField(
-                            placeholder: "Enter your phone number",
-                            controller: _enterPhoneNumber,
-                            keyboardType: TextInputType.number,
-                            style: TextStyle(
-                                fontSize: 25,
-                                color: CupertinoColors.secondaryLabel),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
-                    child: CupertinoTextField(
-                      placeholder: "Username",
-                      controller: _enterUsername,
+                  TextField(
                       keyboardType: TextInputType.text,
-                      style: TextStyle(
-                          fontSize: 25, color: CupertinoColors.secondaryLabel),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
-                    child: CupertinoTextField(
-                      placeholder: "Email",
                       controller: _enterEmail,
-                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        // labelText: 'Phone Number',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                      ),
+
                       style: TextStyle(
-                          fontSize: 25, color: CupertinoColors.secondaryLabel),
-                    ),
+                        fontSize: 20,
+                      )),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 5.0),
+                    child: Text("Phone Number",
+                        style: TextStyle(color: Colors.black26, fontSize: 16)),
                   ),
-                  Text("You will receive an activation code in short time",
+                  IntlPhoneField(
+                      keyboardType: TextInputType.number,
+                      controller: _enterPhoneNumber,
+                      decoration: InputDecoration(
+                        // labelText: 'Phone Number',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                      ),
+                      initialCountryCode: 'BD',
                       style: TextStyle(
-                          color: CupertinoColors.systemGrey, fontSize: 15)),
+                        fontSize: 20,
+                      )),
+
+                  Row(
+                    children: [
+                      Checkbox(value: isChecked, onChanged: (bool? value){
+                        setState(() {
+                          isChecked = value!;
+                        });
+                      }),
+                      Expanded(child: Text("I have read and agree to the Privacy Policy and Terms and Condition"))
+                    ],
+                  ),
+
+                  //-----------------------------------------------------------
+
 
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 40),
-                    child: ElevatedButton(
-                      child: Text("Request code"),
-                      onPressed: () async {
-                        print("The button is pressed");
-                        if (await checkIfDocExists(data['code']! + _enterPhoneNumber.text.trim()) == true) {
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ElevatedButton(
+                          child: Text("Sign Up"),
+                          onPressed: () async {
+                            print("The button is pressed");
+                            if (await checkIfDocExists(data['code']! + _enterPhoneNumber.text.trim()) == true) {
 
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => VerifyNumber(
-                                        number: data['code']! +
-                                            _enterPhoneNumber.text.trim(),
-                                        username: _enterUsername.text.trim(),
-                                        email: _enterEmail.text.trim(),
-                                        page_name: "signup",
-                                      )));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Please wait for the OTP code")));
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("User Exists")));
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                          primary: Theme.of(context).primaryColor,
-                          textStyle: TextStyle(fontSize: 20)),
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) => VerifyNumber(
+                                            number: data['code']! +
+                                                _enterPhoneNumber.text.trim(),
+                                            username: _enterUsername.text.trim(),
+                                            email: _enterEmail.text.trim(),
+                                            page_name: "signup",
+                                          )));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Please wait for the OTP code")));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("User Exists")));
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context).primaryColor,
+                              textStyle: TextStyle(fontSize: 20)),
+                        ),
+                      ],
                     ),
                   )
                 ],

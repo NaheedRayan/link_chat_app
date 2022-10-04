@@ -1,6 +1,7 @@
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:link_chat_app/components/logo.dart';
 import 'package:link_chat_app/screens/login/select_country.dart';
 import 'package:link_chat_app/screens/login/signup.dart';
@@ -25,117 +26,104 @@ class _EditNumberState extends State<EditNumber> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Edit Number'),
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Logo(width: 50.0, height: 50.0, radius: 25.0),
-                  Text("SignIn",
-                      style: TextStyle(
-                          color: Color(0xFF08C187).withOpacity(0.7),
-                          fontSize: 30))
-                ],
-              ),
-              Text("Enter your phone number",
-                  style: TextStyle(
-                      color: CupertinoColors.systemGrey.withOpacity(0.7),
-                      fontSize: 25)),
-              SizedBox(
-                height: 20,
-              ),
-              ListTile(
-                onTap: () async {
-                  dataResult = await Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => SelectCountry()));
-                  setState(() {
-                    if (dataResult != null) data = dataResult;
-                  });
-                },
-                title: Text(data["name"],
-                    style: TextStyle(color: Color(0xFF08C187), fontSize: 25)),
-              ),
 
-              Divider(height: 1, color: Colors.grey, endIndent: 16, indent: 16),
-              // THIS
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
-                      child: Text(data["code"],
-                          style: TextStyle(
-                              fontSize: 25,
-                              color: CupertinoColors.secondaryLabel)),
-                    ),
-                    Expanded(
-                      child: CupertinoTextField(
-                        placeholder: "Enter your phone number",
-                        controller: _enterPhoneNumber,
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: CupertinoColors.secondaryLabel),
+          // appBar: AppBar(
+          //   title: const Text('Sign In'),
+          //   backgroundColor: Theme.of(context).primaryColor,
+          // ),
+          backgroundColor: Colors.white,
+          body: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Link",
+                    style: TextStyle(color: Color(0xFF08C187), fontSize: 60)),
+                Text("Privacy Matters",
+                    style:
+                        TextStyle(color: Colors.grey.shade400, fontSize: 20)),
+                SizedBox(
+                  height: 50,
+                ),
+                Text("Sign In",
+                    style: TextStyle(color: Colors.black54, fontSize: 25, fontWeight: FontWeight.bold,)),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 5.0),
+                  child: Text("Your Phone Number",
+                      style: TextStyle(color: Colors.black26, fontSize: 16)),
+                ),
+                IntlPhoneField(
+                    keyboardType: TextInputType.number,
+                    controller: _enterPhoneNumber,
+                    decoration: InputDecoration(
+                      // labelText: 'Phone Number',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(),
                       ),
-                    )
-                  ],
-                ),
-              ),
-
-              Text("You will receive an activation code in short time",
-                  style: TextStyle(
-                      color: CupertinoColors.systemGrey, fontSize: 15)),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an Account?",
-                    style: TextStyle(color: CupertinoColors.systemGrey),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUp(),
-                          ));
-                    },
-                    child: Text(
-                      "SignUp",
-                      style: TextStyle(color: Theme.of(context).primaryColor),
                     ),
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40),
-                child: ElevatedButton(
-                  child: Text("Request code"),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => VerifyNumber(
-                                  number:
-                                      data['code']! + _enterPhoneNumber.text,
-                                )));
-                  },
-                  style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
-                      textStyle: TextStyle(fontSize: 20)),
+                    initialCountryCode: 'BD',
+                    style: TextStyle(
+                      fontSize: 20,
+                    )),
+
+                // Text("You will receive an activation code in short time",
+                //     style: TextStyle(
+                //         color: CupertinoColors.systemGrey, fontSize: 15)),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 40),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      OutlinedButton(
+                        child: Text("Sign In"),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => VerifyNumber(
+                                        number: data['code']! +
+                                            _enterPhoneNumber.text,
+                                      )));
+                        },
+                        style: OutlinedButton.styleFrom(
+                            primary: Theme.of(context).primaryColor,
+                            textStyle: TextStyle(fontSize: 20)),
+                      ),
+                    ],
+                  ),
                 ),
-              )
-            ],
+                Text(
+                  "Don't have an Account?",
+                  style: TextStyle(color: CupertinoColors.systemGrey),
+                ),
+
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ElevatedButton(
+                        child: Text("Sign Up"),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignUp(),
+                              ));
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).primaryColor,
+                            textStyle: TextStyle(fontSize: 20)),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           )),
     );
   }

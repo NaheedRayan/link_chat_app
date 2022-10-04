@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:fast_rsa/fast_rsa.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../main.dart';
 
@@ -37,6 +38,16 @@ class _VerifyNumberState extends State<VerifyNumber> {
   var _status = Status.Waiting;
   var _verificationId;
   var _textEditingController = TextEditingController();
+
+  //rsa variables
+  var key ,pub_key,pri_key;
+  var message  ;
+  var en_msg , de_msg ;
+
+
+  // Create storage
+  final storage = new FlutterSecureStorage();
+
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -88,7 +99,28 @@ class _VerifyNumberState extends State<VerifyNumber> {
 
             //will work if the user is new
             if (page_name == "signup") {
-              var obj = await FirebaseFirestore.instance
+
+              ////////////////////////////////////////////////////
+              ////////////////////generating key//////////////////
+              ////////////////////////////////////////////////////
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Please wait while the key is being generated")));
+
+              key = await RSA.generate(3072);
+              setState((){
+                pub_key = key.publicKey ;
+                pri_key = key.privateKey ;
+              });
+              // Write value
+              await storage.write(key: "pri_key", value: pri_key);
+              // Read value
+              // var x = await storage.read(key :"pri_key");
+              // print(x);
+
+
+
+              var obj1 = await FirebaseFirestore.instance
                   .collection('user')
                   .doc(phoneNumber);
               var UserData = {
@@ -97,9 +129,40 @@ class _VerifyNumberState extends State<VerifyNumber> {
                 "groups": [phoneNumber],
                 "photoURL": "",
                 "uid": phoneNumber,
-                "public_key": ""
+                "public_key": pub_key,
               };
-              await obj.set(UserData);
+              await obj1.set(UserData);
+
+              var obj2 = await FirebaseFirestore.instance
+                  .collection('group')
+                  .doc(phoneNumber);
+              var GroupData = {
+                "createdAt": DateTime.now(),
+                "createdBy": username,
+                "members": [
+                  {
+                    "user_id" : phoneNumber ,
+                    "public_key": pub_key,
+                  },
+                ],
+                "id": phoneNumber,
+                "modifiedAt": "",
+                "name": "Me",
+                "recentMessages": {
+
+                  "message_text": "",
+                  "readBy":"",
+                  "sentAt":"",
+                  "sentBy":"",
+                },
+                "type":"1",
+
+              };
+              await obj2.set(GroupData);
+
+
+
+
 
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("User Is Added")));

@@ -32,7 +32,7 @@ class _EditNumberState extends State<EditNumber> {
           //   backgroundColor: Theme.of(context).primaryColor,
           // ),
           backgroundColor: Colors.white,
-          body: Padding(
+          body: SingleChildScrollView(
             padding: const EdgeInsets.all(25.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

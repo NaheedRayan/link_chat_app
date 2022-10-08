@@ -186,10 +186,10 @@ class _VerifyNumberState extends State<VerifyNumber> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Verify Number'),
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
+          // appBar: AppBar(
+          //   title: const Text('Verify Number'),
+          //   backgroundColor: Theme.of(context).primaryColor,
+          // ),
           body: _status != Status.Error
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -84,6 +84,7 @@ flutter:
     - images/ic_launcher.png
     - images/profile_pic.png
     - assets/CountryCodes.json
+    - images/search_white.png
 
 
 

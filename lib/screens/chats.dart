@@ -16,8 +16,15 @@ class Chats extends StatefulWidget {
 class _ChatsState extends State<Chats> {
   List<String> items = List<String>.generate(10, (i) => (i + 1).toString());
 
+  TextEditingController searchTextEditingController = new TextEditingController();
+
+  get prefixIcon => null;
+
+
+
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         // leading:  ProfilePic(height: 5.0, width: 5.0, radius: 15.0),
@@ -41,21 +48,75 @@ class _ChatsState extends State<Chats> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextField(
-                keyboardType: TextInputType.text,
-                // controller: _enterUsername,
-                decoration: InputDecoration(
-                  labelText: 'Search',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(),
-                  ),
+
+          // new code for search
+          Container(
+            padding: const EdgeInsets.fromLTRB(20.0,7.0,20.0,15.0),
+            height: 70,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+
+                  controller: searchTextEditingController,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      hintText: " search username",
+                      prefixIcon: prefixIcon??Icon(Icons.search),
+
+                      hintStyle: TextStyle(
+                        color: Colors.black26,
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(55),
+
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(55),
+                        borderSide: BorderSide(
+                          color: Colors.black26,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
                 ),
-                style: TextStyle(
-                  fontSize: 16,
-                )),
+                ),
+
+                // search button for search off now
+                // Padding(
+                //   padding: const EdgeInsets.all(3.0),
+                //   child: GestureDetector(
+                //     onTap: (){
+                //       //initiateSearch();
+                //     },
+                //     child: Container(
+                //         height: 40,
+                //         width: 40,
+                //         decoration: BoxDecoration(
+                //           gradient: LinearGradient(
+                //             colors: [
+                //               const Color(0xFF02FC23),
+                //               const Color(0xF200BE25),
+                //             ],
+                //           ),
+                //           borderRadius: BorderRadius.circular(25),
+                //         ),
+                //         padding: EdgeInsets.all(10),
+                //         child: Image.asset("images/search_white.png")
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
           ),
+
+
           Expanded(
             child: ListView.builder(
               // Let the ListView know how many items it needs to build.
@@ -65,12 +126,38 @@ class _ChatsState extends State<Chats> {
               itemBuilder: (context, index) {
                 final item = items[index];
 
-                return Container(
-                  child: Column(
-                    children: [Text("data")],
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 18.0,
+                    child: ClipOval(
+                    child: Image.asset("images/profile_pic.png",
+                   ),
+                   ),
+                  ),
+                  title: Text(
+                    "Ashraf",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17.0,
+                    ),
+                  ),
+                  subtitle: Text(
+                     "test massage get",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                    ),
+                  ),
+
+                  trailing: Text(
+                    "12 sep \n 10.00pm",
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
                   ),
                 );
-              },
+              },//item
             ),
           ),
         ],

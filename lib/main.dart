@@ -12,6 +12,7 @@ import 'package:link_chat_app/screens/chats.dart';
 import 'package:link_chat_app/screens/login/verify_number.dart';
 import 'package:link_chat_app/screens/people.dart';
 import 'package:link_chat_app/screens/login/hello.dart';
+import 'package:flutter/services.dart';
 
 import 'screens/login/edit_number.dart';
 
@@ -25,6 +26,12 @@ bool loggedin = false;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  //for transparent status bar
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent, // transparent status bar
+  ));
+
   await Firebase.initializeApp();
 
   if (USE_EMULATOR) {
@@ -170,23 +177,6 @@ class _HomePageState extends State<HomePage> {
         onTap: _onItemTapped,
       ),
     );
-    // return CupertinoPageScaffold(
-    //     child: CupertinoTabScaffold(
-    //   tabBar: CupertinoTabBar(
-    //     items: const [
-    //       BottomNavigationBarItem(
-    //           label: "Chats", icon: Icon(CupertinoIcons.chat_bubble_2_fill)),
-    //       BottomNavigationBarItem(
-    //           label: "Calls", icon: Icon(CupertinoIcons.videocam_circle_fill)),
-    //       BottomNavigationBarItem(
-    //           label: "People", icon: Icon(CupertinoIcons.person_2_fill)),
-    //       BottomNavigationBarItem(
-    //           label: "Settings", icon: Icon(CupertinoIcons.settings_solid)),
-    //     ],
-    //   ),
-    //   tabBuilder: (BuildContext context, int index) {
-    //     return screens[index];
-    //   },
-    // ));
+
   }
 }

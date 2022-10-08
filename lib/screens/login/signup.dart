@@ -43,17 +43,17 @@ class _SignUpState extends State<SignUp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
 
-                  Text("SignUp",
+                  const Text("SignUp",
                       style: TextStyle(
                           color: Colors.black54,
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                       )),
-                  Text("For Signing Up We need Your Personal Inforamtion",
+                  const Text("For Signing Up We need Your Personal Inforamtion",
                       style: TextStyle(
                           color: Colors.black26,
                           fontSize: 16)),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
 

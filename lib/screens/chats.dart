@@ -4,12 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:link_chat_app/components/profile_pic.dart';
+import 'package:link_chat_app/main.dart';
+import 'package:link_chat_app/screens/login/chatscreen.dart';
 
 import '../components/logo.dart';
 
+
 class Chats extends StatefulWidget {
   const Chats({Key? key}) : super(key: key);
-
   @override
   State<Chats> createState() => _ChatsState();
 }
@@ -34,10 +36,14 @@ class _ChatsState extends State<Chats> {
 
   get prefixIcon => null;
 
+  static get groupname => null;
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
+
       appBar: AppBar(
         // leading:  ProfilePic(height: 5.0, width: 5.0, radius: 15.0),
         // leading: Icon(Icons.account_circle_rounded),
@@ -125,7 +131,15 @@ class _ChatsState extends State<Chats> {
                           .format(myDateTime); // 12/31, 10:00 PM
 
                       return ListTile(
-                        onTap: (){},
+
+                        //new code....................................................
+                        onTap: (){
+                          //navigator for new chatscreen for groups or user
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => chatscreen(
+                              groupname: data.docs[index]["group_name"],),));
+                        },
+
                         leading: CircleAvatar(
                           backgroundColor: Colors.white,
                           radius: 18.0,
@@ -213,5 +227,7 @@ class _ChatsState extends State<Chats> {
         ],
       ),
     );
+
   }
+
 }

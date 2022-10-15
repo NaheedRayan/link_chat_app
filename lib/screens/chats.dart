@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:link_chat_app/components/profile_pic.dart';
 
 import '../components/logo.dart';
@@ -16,11 +17,22 @@ class Chats extends StatefulWidget {
 class _ChatsState extends State<Chats> {
   List<String> items = List<String>.generate(10, (i) => (i + 1).toString());
 
-  TextEditingController searchTextEditingController = new TextEditingController();
+  TextEditingController searchTextEditingController =
+      new TextEditingController();
+
+  // final db = FirebaseFirestore.instance ;
+  // final  metadata = FirebaseFirestore.instance.collection("group_metadata").doc("+8801518689157").get() ;
+  final collectionStream = FirebaseFirestore.instance
+      .collection('group_metadata')
+      .doc("+8801518689157")
+      .collection("group_name")
+      .snapshots();
+  Stream documentStream = FirebaseFirestore.instance
+      .collection('group_metadata')
+      .doc('+8801518689157')
+      .snapshots();
 
   get prefixIcon => null;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +46,7 @@ class _ChatsState extends State<Chats> {
 
         actions: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0.0,0.0,20.0,0.0),
+            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
             child: Container(
               width: 30,
               child: Image.asset(
@@ -48,118 +60,156 @@ class _ChatsState extends State<Chats> {
       ),
       body: Column(
         children: [
-
           // new code for search
-          Container(
-            padding: const EdgeInsets.fromLTRB(20.0,7.0,20.0,15.0),
-            height: 70,
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: searchTextEditingController,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
+              decoration: InputDecoration(
+                filled: true,
+                hintText: "Search",
+                prefixIcon: prefixIcon ?? Icon(Icons.search),
+                isDense: true,
+                // Added this
+                contentPadding: EdgeInsets.all(8),
+                // Added this
 
-                  controller: searchTextEditingController,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-
-                    ),
-                    decoration: InputDecoration(
-                      filled: true,
-                      hintText: " search username",
-                      prefixIcon: prefixIcon??Icon(Icons.search),
-
-                      hintStyle: TextStyle(
-                        color: Colors.black26,
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(55),
-
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(55),
-                        borderSide: BorderSide(
-                          color: Colors.black26,
-                          width: 1.0,
-                        ),
-                      ),
-                    ),
+                hintStyle: TextStyle(
+                  color: Colors.black26,
                 ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(60),
                 ),
-
-                // search button for search off now
-                // Padding(
-                //   padding: const EdgeInsets.all(3.0),
-                //   child: GestureDetector(
-                //     onTap: (){
-                //       //initiateSearch();
-                //     },
-                //     child: Container(
-                //         height: 40,
-                //         width: 40,
-                //         decoration: BoxDecoration(
-                //           gradient: LinearGradient(
-                //             colors: [
-                //               const Color(0xFF02FC23),
-                //               const Color(0xF200BE25),
-                //             ],
-                //           ),
-                //           borderRadius: BorderRadius.circular(25),
-                //         ),
-                //         padding: EdgeInsets.all(10),
-                //         child: Image.asset("images/search_white.png")
-                //     ),
-                //   ),
-                // ),
-              ],
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(60),
+                  borderSide: BorderSide(
+                    color: Colors.black26,
+                    width: 1.0,
+                  ),
+                ),
+              ),
             ),
           ),
-
 
           Expanded(
-            child: ListView.builder(
-              // Let the ListView know how many items it needs to build.
-              itemCount: items.length,
-              // Provide a builder function. This is where the magic happens.
-              // Convert each item into a widget based on the type of item it is.
-              itemBuilder: (context, index) {
-                final item = items[index];
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('group_metadata')
+                  .doc("+8801518689157")
+                  .collection("group_name")
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Something went wrong');
+                }
 
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 18.0,
-                    child: ClipOval(
-                    child: Image.asset("images/profile_pic.png",
-                   ),
-                   ),
-                  ),
-                  title: Text(
-                    "Ashraf",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17.0,
-                    ),
-                  ),
-                  subtitle: Text(
-                     "test massage get",
-                    style: TextStyle(
-                      fontSize: 14.0,
-                    ),
-                  ),
+                // if (snapshot.connectionState == ConnectionState.waiting) {
+                //   return Text("Loading");
+                // }
 
-                  trailing: Text(
-                    "12 sep \n 10.00pm",
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 13,
-                    ),
-                  ),
-                );
-              },//item
+                if (snapshot.hasData) {
+                  final data = snapshot.requireData;
+
+                  return ListView.builder(
+                    itemCount: data.size,
+                    itemBuilder: (context, index) {
+                      var myDateTime =
+                          data.docs[index]["last_msg_time"].toDate();
+                      var formatted_date = DateFormat('hh:mm a')
+                          .format(myDateTime); // 12/31, 10:00 PM
+
+                      return ListTile(
+                        onTap: (){},
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 18.0,
+                          child: ClipOval(
+                            child: Image.asset(
+                              "images/profile_pic.png",
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          data.docs[index]["group_name"],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17.0,
+                          ),
+                        ),
+                        subtitle: Text(
+                          data.docs[index]["msg"],
+                          style: TextStyle(
+                            fontSize: 14.0,
+                          ),
+                        ),
+                        trailing: Text(
+                          // DateTime dt = (map['timestamp'] as Timestamp).toDate();
+                          // data.docs[index]["last_msg_time"].toDate().toString() ,
+                          formatted_date,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Text("Loading");
+                }
+              },
             ),
           ),
+
+          // Expanded(
+          //   child: ListView.builder(
+          //     // Let the ListView know how many items it needs to build.
+          //     itemCount: items.length,
+          //     // Provide a builder function. This is where the magic happens.
+          //     // Convert each item into a widget based on the type of item it is.
+          //     itemBuilder: (context, index) {
+          //       final item = items[index];
+          //
+          //       return ListTile(
+          //         leading: CircleAvatar(
+          //           backgroundColor: Colors.white,
+          //           radius: 18.0,
+          //           child: ClipOval(
+          //             child: Image.asset(
+          //               "images/profile_pic.png",
+          //             ),
+          //           ),
+          //         ),
+          //         title: Text(
+          //           "Ashraf",
+          //           style: TextStyle(
+          //             fontWeight: FontWeight.bold,
+          //             fontSize: 17.0,
+          //           ),
+          //         ),
+          //         subtitle: Text(
+          //           "test massage get",
+          //           style: TextStyle(
+          //             fontSize: 14.0,
+          //           ),
+          //         ),
+          //         trailing: Text(
+          //           "12 sep \n 10.00pm",
+          //           style: const TextStyle(
+          //             color: Colors.grey,
+          //             fontSize: 13,
+          //           ),
+          //         ),
+          //       );
+          //     }, //item
+          //   ),
+          // ),
         ],
       ),
     );

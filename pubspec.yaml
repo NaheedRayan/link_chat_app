@@ -52,8 +52,11 @@ dependencies:
   # for saving private key in shared preferences
   flutter_secure_storage: ^6.0.0
 
-
+  #for flag
   intl_phone_field: ^3.1.0
+
+  #timestamp
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

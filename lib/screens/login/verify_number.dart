@@ -160,6 +160,20 @@ class _VerifyNumberState extends State<VerifyNumber> {
               };
               await obj2.set(GroupData);
 
+              var obj3 = await FirebaseFirestore.instance
+                  .collection('group_metadata')
+                  .doc(phoneNumber.toString())
+                  .collection("group_name")
+                  .doc(phoneNumber.toString());
+              
+              var GroupMetaData = {
+                "group_name": "Me",
+                "group_id": phoneNumber,
+                "last_msg_time": DateTime.now(),
+                "msg": "Say Hi",
+                "type":"1",
+              };
+              await obj3.set(GroupMetaData);
 
 
 

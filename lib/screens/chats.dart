@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:link_chat_app/components/profile_pic.dart';
 import 'package:link_chat_app/main.dart';
-import 'package:link_chat_app/screens/login/chatscreen.dart';
+import 'package:link_chat_app/screens/chatscreen.dart';
 
 import '../components/logo.dart';
 
@@ -22,17 +22,13 @@ class _ChatsState extends State<Chats> {
   TextEditingController searchTextEditingController =
       new TextEditingController();
 
-  // final db = FirebaseFirestore.instance ;
-  // final  metadata = FirebaseFirestore.instance.collection("group_metadata").doc("+8801518689157").get() ;
+
   final collectionStream = FirebaseFirestore.instance
       .collection('group_metadata')
       .doc("+8801518689157")
       .collection("group_name")
       .snapshots();
-  Stream documentStream = FirebaseFirestore.instance
-      .collection('group_metadata')
-      .doc('+8801518689157')
-      .snapshots();
+
 
   get prefixIcon => null;
 
@@ -106,7 +102,7 @@ class _ChatsState extends State<Chats> {
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('group_metadata')
-                  .doc("+8801518689157")
+                  .doc("+8801775445119")
                   .collection("group_name")
                   .snapshots(),
               builder: (BuildContext context,

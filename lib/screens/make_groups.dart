@@ -60,7 +60,7 @@ class _make_groupsState extends State<make_groups> {
                       } else {
 
                         ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text("Please wait while the group is being create"),));
+                            .showSnackBar(SnackBar(content: Text("Please wait while the group is being created"),));
                         // getting the number from storage
                         var number = await storage.read(key: "number");
                         var data = await FirebaseFirestore.instance

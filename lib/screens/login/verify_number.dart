@@ -40,10 +40,10 @@ class _VerifyNumberState extends State<VerifyNumber> {
   var _textEditingController = TextEditingController();
 
   //rsa variables
-  var key ,pub_key,pri_key;
-  var message  ;
-  var en_msg , de_msg ;
+  var key, pub_key, pri_key;
+  var message;
 
+  var en_msg, de_msg;
 
   // Create storage
   final storage = new FlutterSecureStorage();
@@ -96,29 +96,31 @@ class _VerifyNumberState extends State<VerifyNumber> {
       await _auth
           .signInWithCredential(credential)
           .then((value) async {
-
             //will work if the user is new
             if (page_name == "signup") {
-
               ////////////////////////////////////////////////////
               ////////////////////generating key//////////////////
               ////////////////////////////////////////////////////
 
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Please wait while the key is being generated")));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content:
+                      Text("Please wait while the key is being generated")));
 
               key = await RSA.generate(3072);
-              setState((){
-                pub_key = key.publicKey ;
-                pri_key = key.privateKey ;
+              setState(() {
+                pub_key = key.publicKey;
+                pri_key = key.privateKey;
               });
+
+              ////////////////////////////////////////////////////
+              // in shared preference
               // Write value
               await storage.write(key: "pri_key", value: pri_key);
               // Read value
               // var x = await storage.read(key :"pri_key");
               // print(x);
 
-
+              await storage.write(key: "number", value: phoneNumber);
 
               var obj1 = await FirebaseFirestore.instance
                   .collection('user')
@@ -138,10 +140,10 @@ class _VerifyNumberState extends State<VerifyNumber> {
                   .doc(phoneNumber);
               var GroupData = {
                 "createdAt": DateTime.now(),
-                "createdBy": username,
+                "createdBy": phoneNumber,
                 "members": [
                   {
-                    "user_id" : phoneNumber ,
+                    "user_id": phoneNumber,
                     "public_key": pub_key,
                   },
                 ],
@@ -149,14 +151,12 @@ class _VerifyNumberState extends State<VerifyNumber> {
                 "modifiedAt": "",
                 "name": "Me",
                 "recentMessages": {
-
                   "message_text": "",
-                  "readBy":"",
-                  "sentAt":"",
-                  "sentBy":"",
+                  "readBy": "",
+                  "sentAt": "",
+                  "sentBy": "",
                 },
-                "type":"1",
-
+                "type": "1",
               };
               await obj2.set(GroupData);
 
@@ -165,26 +165,27 @@ class _VerifyNumberState extends State<VerifyNumber> {
                   .doc(phoneNumber.toString())
                   .collection("group_name")
                   .doc(phoneNumber.toString());
-              
+
               var GroupMetaData = {
                 "group_name": "Me",
                 "group_id": phoneNumber,
                 "last_msg_time": DateTime.now(),
                 "msg": "Say Hi",
-                "type":"1",
+                "type": "1",
               };
               await obj3.set(GroupMetaData);
 
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text("User Is Added")));
+            } else {
+              // writing phone number in shared preferences
+                await storage.write(key: "number", value: phoneNumber);
 
-
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("User Is Added")));
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  CupertinoPageRoute(builder: (context) => HomePage()),
+                  (route) => false);
             }
-            Navigator.pushAndRemoveUntil(
-                context,
-                CupertinoPageRoute(builder: (context) => HomePage()),
-                (route) => false);
           })
           .whenComplete(() {})
           .onError((error, stackTrace) {

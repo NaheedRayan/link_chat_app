@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'add_friend.dart';
+
 class chatscreen extends StatelessWidget {
   final String groupname;
   const chatscreen({Key? key,required this.groupname}) : super(key: key);
@@ -56,8 +58,12 @@ class chatscreen extends StatelessWidget {
               // if value 1 show dialog
               if (value == 1) {
                 // _showDialog(context);
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text("button 1"),));
+                // ScaffoldMessenger.of(context)
+                //     .showSnackBar(SnackBar(content: Text("button 1"),));
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => add_friend(group_name:groupname,),
+                  fullscreenDialog: true,
+                ));
                 // if value 2 show dialog
               } else if (value == 2) {
                 // _showDialog(context);

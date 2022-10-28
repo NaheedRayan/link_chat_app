@@ -31,6 +31,7 @@ class _ChatsState extends State<Chats> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return FutureBuilder<dynamic>(
+
         future: callAsyncFetch(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {

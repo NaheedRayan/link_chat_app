@@ -101,6 +101,26 @@ class _add_friendState extends State<add_friend> {
                             else{
                               group_collection_obj.add_user(friend_id , friend_exist["public_key"]);
                               await FirebaseFirestore.instance.collection("group").doc(groupId).update(group_collection_obj.toJson());
+
+                                  var obj3 = await FirebaseFirestore.instance
+                                      .collection('group_metadata')
+                                      .doc(number)
+                                      .collection("group_name")
+                                      .doc(groupId);
+
+                                  var GroupMetaData = {
+                                    "group_name": group_name,
+                                    "group_id": groupId,
+                                    "last_msg_time": DateTime.now(),
+                                    "msg": "New User added",
+                                    "type": "2",
+                                  };
+                                  await obj3.set(GroupMetaData);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(content: Text("User Added"),backgroundColor: Colors.green,));
+
+                              Navigator.of(context).pop();
+
                             }
 
 
@@ -112,73 +132,6 @@ class _add_friendState extends State<add_friend> {
 
                           }
 
-                        //   var obj = user(
-                        //       data['displayName'],
-                        //       data['email'],
-                        //       data['groups'],
-                        //       data['photoURL'],
-                        //       data['public_key'],
-                        //       data['uid']);
-                        //
-                        //   // generating new group id and adding it to collection
-                        //   String _ModifiedGroupId =
-                        //       number! + "+" + _groupName.text.trim();
-                        //   if (obj.does_group_exist(_ModifiedGroupId.trim()) ==
-                        //       false) {
-                        //     obj.add_groupid(_ModifiedGroupId.trim());
-                        //     await FirebaseFirestore.instance
-                        //         .collection("user")
-                        //         .doc(number)
-                        //         .update(obj.toJson());
-                        //
-                        //     // print(ModifiedGroupId);
-                        //     var obj2 = await FirebaseFirestore.instance
-                        //         .collection('group')
-                        //         .doc(_ModifiedGroupId);
-                        //     var GroupData = {
-                        //       "createdAt": DateTime.now(),
-                        //       "createdBy": number,
-                        //       "members": [
-                        //         {
-                        //           "user_id": number,
-                        //           "public_key": obj.public_key,
-                        //         },
-                        //       ],
-                        //       "id": _ModifiedGroupId,
-                        //       "modifiedAt": "",
-                        //       "name": _groupName.text.trim(),
-                        //       "recentMessages": {
-                        //         "message_text": "",
-                        //         "readBy": "",
-                        //         "sentAt": "",
-                        //         "sentBy": "",
-                        //       },
-                        //       "type": "1",
-                        //     };
-                        //     await obj2.set(GroupData);
-                        //
-                        //     var obj3 = await FirebaseFirestore.instance
-                        //         .collection('group_metadata')
-                        //         .doc(number)
-                        //         .collection("group_name")
-                        //         .doc(_ModifiedGroupId);
-                        //
-                        //     var GroupMetaData = {
-                        //       "group_name": _groupName.text.trim(),
-                        //       "group_id": _ModifiedGroupId,
-                        //       "last_msg_time": DateTime.now(),
-                        //       "msg": "Say Hi",
-                        //       "type": "1",
-                        //     };
-                        //     await obj3.set(GroupMetaData);
-                        //   }
-                        //   ScaffoldMessenger.of(context)
-                        //       .showSnackBar(SnackBar(content: Text("Group Created Successfully"),backgroundColor: Colors.green,));
-                        //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        //     builder: (context) => chatscreen(
-                        //       groupname: _groupName.text.trim() ,
-                        //     ),
-                        //   ));
                       }
                     },
                     style: ElevatedButton.styleFrom(

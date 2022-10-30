@@ -18,6 +18,16 @@ class _chatscreenState extends State<chatscreen> {
     ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "sender"),
     ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
     ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
+    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
+    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
+    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "sender"),
+    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
+    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
+    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
+    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
+    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "sender"),
+    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
+    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
   ];
 
   @override
@@ -89,79 +99,105 @@ class _chatscreenState extends State<chatscreen> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
 
-      body:  Stack(
-        children: <Widget>[
-
-          ListView.builder(
-            itemCount: messages.length,
-            shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10,bottom: 10),
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index){
-              return Container(
-                padding: EdgeInsets.only(left: 14,right: 14,top: 10,bottom: 10),
-                child: Align(
-                  alignment: (messages[index].messageType == "receiver"?Alignment.topLeft:Alignment.topRight),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: (messages[index].messageType  == "receiver"?Colors.grey.shade200:Colors.greenAccent[100]),
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: Text(messages[index].messageContent, style: TextStyle(fontSize: 15),),
-                  ),
-                ),
-              );
-            },
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Container(
-              padding: EdgeInsets.only(left: 10,bottom: 10,top: 10),
-              height: 60,
-              width: double.infinity,
-              color: Colors.white,
-              child: Row(
+      body:  SafeArea(
+        child: WillPopScope(
+          onWillPop: ()async { return true ;},
+          child: Stack(
+            children: <Widget>[
+              Column(
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: (){
-                    },
-                    child: Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Icon(Icons.add, color: Colors.white, size: 20, ),
-                    ),
-                  ),
-                  SizedBox(width: 15,),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: "Write message...",
-                          hintStyle: TextStyle(color: Colors.black54),
-                          border: InputBorder.none
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 15,),
-                  FloatingActionButton(
-                    onPressed: (){},
-                    child: Icon(Icons.send,color: Colors.white,size: 18,),
-                    backgroundColor: Theme.of(context).primaryColor,
-                    elevation: 0,
-                  ),
-                ],
+                  // List of messages
+                  // buildListMessage(),
 
+                  // // Sticker
+                  // isShowSticker ? buildSticker() : SizedBox.shrink(),
+
+                  // Input content
+                  buildInput(),
+                ],
+              ),
+
+              // Loading
+              // buildLoading()
+            ],
+          ),
+
+        ),
+      ),
+    );
+
+    
+  }
+
+  // Widget buildListMessage() {}
+
+  Widget buildInput() {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          // Button send image
+          Material(
+            child: Container(
+              // margin: EdgeInsets.symmetric(horizontal: 1),
+              child: IconButton(
+                icon: Icon(Icons.add),
+
+                color: Theme.of(context).primaryColor, onPressed: () {  },
+              ),
+            ),
+            color: Colors.white,
+          ),
+          Material(
+            child: Container(
+              // margin: EdgeInsets.symmetric(horizontal: 1),
+              child: IconButton(
+                icon: Icon(Icons.image),
+                onPressed: (){},
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            color: Colors.white,
+          ),
+
+          // Edit text
+          Flexible(
+            child: Container(
+              margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+              child: TextField(
+                onSubmitted: (value) {
+                  // onSendMessage(textEditingController.text, TypeMessage.text);
+                },
+                style: TextStyle(color: Colors.black87, fontSize: 15),
+                // controller: textEditingController,
+                decoration: InputDecoration.collapsed(
+                  hintText: 'Type your message...',
+                  hintStyle: TextStyle(color: Colors.black26),
+                ),
+
+                // focusNode: focusNode,
+                autofocus: true,
               ),
             ),
           ),
+
+          // Button send message
+          Material(
+            child: Container(
+              // margin: EdgeInsets.symmetric(horizontal: 8),
+              child: IconButton(
+                icon: Icon(Icons.send_rounded),
+                onPressed: () {},
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            color: Colors.white,
+          ),
         ],
       ),
-
-
+      width: double.infinity,
+      height: 50,
+      decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: Theme.of(context).primaryColor, width: 0.5)), color: Colors.white),
     );
   }
 }

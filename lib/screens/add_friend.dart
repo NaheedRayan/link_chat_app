@@ -4,24 +4,24 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:link_chat_app/screens/models/group_collection.dart';
 
+import 'models/user.dart';
+
 class add_friend extends StatefulWidget {
-  final String group_name ;
-  const add_friend({Key? key, required String this.group_name}) : super(key: key);
+  final String group_name;
+
+  const add_friend({Key? key, required String this.group_name})
+      : super(key: key);
 
   @override
   State<add_friend> createState() => _add_friendState(group_name);
 }
 
 class _add_friendState extends State<add_friend> {
-
-
   TextEditingController _friendId = new TextEditingController();
   final storage = new FlutterSecureStorage();
-  final String group_name ;
+  final String group_name;
 
   _add_friendState(String this.group_name);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,6 @@ class _add_friendState extends State<add_friend> {
                   ),
                 ),
                 initialCountryCode: 'BD',
-
                 style: TextStyle(
                   fontSize: 20,
                 )),
@@ -63,75 +62,129 @@ class _add_friendState extends State<add_friend> {
                   ElevatedButton(
                     child: Text("Add"),
                     onPressed: () async {
-
                       // print(_friendId.text.trim());
                       if (_friendId.text.trim().isEmpty) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text("Field cannot be empty"),backgroundColor: Colors.red,));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Field cannot be empty"),
+                          backgroundColor: Colors.red,
+                        ));
                       } else {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text("Please wait the user is added"),));
-                          // getting the number from storage
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Please wait the user is added"),
+                        ));
+                        // getting the number from storage
 
-                          var number = await storage.read(key: "number");
+                        var number = await storage.read(key: "number");
 
-                          var groupId = number! + "+" + group_name ;
+                        var groupId = number! + "+" + group_name;
 
-                          // print(group_name);
-                          // print(groupId);
-                          var group_data = await FirebaseFirestore.instance
-                              .collection("group")
-                              .doc(groupId)
-                              .get();
+                        // print(group_name);
+                        // print(groupId);
+                        var group_data = await FirebaseFirestore.instance
+                            .collection("group")
+                            .doc(groupId)
+                            .get();
 
-                          var group_collection_obj = group_collection(group_data["createdAt"], group_data["createdBy"], group_data["id"], group_data["members"], group_data["modifiedAt"], group_data["name"], group_data["recentMessages"], group_data["type"]);
+                        var group_collection_obj = group_collection(
+                            group_data["createdAt"],
+                            group_data["createdBy"],
+                            group_data["id"],
+                            group_data["members"],
+                            group_data["modifiedAt"],
+                            group_data["name"],
+                            group_data["recentMessages"],
+                            group_data["type"]);
 
+                        var friend_id = "+880" + _friendId.text.trim();
+                        // print(friend_id);
 
-                          var friend_id = "+880"+_friendId.text.trim();
-                          // print(friend_id);
+                        var friend_exist = await FirebaseFirestore.instance
+                            .collection("user")
+                            .doc(friend_id)
+                            .get();
+                        if (friend_exist.exists) {
+                          // print("The user exists");
+                          if (group_collection_obj
+                              .does_friendId_exist(friend_id)) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("The user is already in the group"),
+                              backgroundColor: Colors.red,
+                            ));
+                          } else {
+                            group_collection_obj.add_user(
+                                friend_id, friend_exist["public_key"]);
 
+                            await FirebaseFirestore.instance
+                                .collection("group")
+                                .doc(groupId)
+                                .update(group_collection_obj.toJson());
 
-                          var friend_exist = await FirebaseFirestore.instance.collection("user").doc(friend_id).get();
-                          if(friend_exist.exists){
-                            // print("The user exists");
-                            if(group_collection_obj.does_friendId_exist(friend_id)){
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text("The user is already in the group"),backgroundColor: Colors.red,));
+                            //updating group metadata of user
+                            var obj1 = await FirebaseFirestore.instance
+                                .collection('group_metadata')
+                                .doc(number)
+                                .collection("group_name")
+                                .doc(groupId);
+                            var GroupMetaData = {
+                              "group_name": group_name,
+                              "group_id": groupId,
+                              "last_msg_time": DateTime.now(),
+                              "msg": "New User added",
+                              "type": "2",
+                            };
+                            await obj1.set(GroupMetaData);
+
+                            //updating group metadata of friend
+                            var obj2 = await FirebaseFirestore.instance
+                                .collection('group_metadata')
+                                .doc(friend_id)
+                                .collection("group_name")
+                                .doc(groupId);
+                            var GroupMetaData2 = {
+                              "group_name": group_name,
+                              "group_id": groupId,
+                              "last_msg_time": DateTime.now(),
+                              "msg": "New User added",
+                              "type": "2",
+                            };
+                            await obj2.set(GroupMetaData2);
+
+                            //updating the data of friend
+                            var data = await FirebaseFirestore.instance
+                                .collection("user")
+                                .doc(friend_id)
+                                .get();
+                            var obj = user(
+                                data['displayName'],
+                                data['email'],
+                                data['groups'],
+                                data['photoURL'],
+                                data['public_key'],
+                                data['uid']);
+
+                            if (obj.does_group_exist(groupId.trim()) ==
+                                false) {
+                              obj.add_groupid(groupId.trim());
+                              await FirebaseFirestore.instance
+                                  .collection("user")
+                                  .doc(friend_id)
+                                  .update(obj.toJson());
                             }
-                            else{
-                              group_collection_obj.add_user(friend_id , friend_exist["public_key"]);
-                              await FirebaseFirestore.instance.collection("group").doc(groupId).update(group_collection_obj.toJson());
 
-                                  var obj3 = await FirebaseFirestore.instance
-                                      .collection('group_metadata')
-                                      .doc(number)
-                                      .collection("group_name")
-                                      .doc(groupId);
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("User Added"),
+                              backgroundColor: Colors.green,
+                            ));
 
-                                  var GroupMetaData = {
-                                    "group_name": group_name,
-                                    "group_id": groupId,
-                                    "last_msg_time": DateTime.now(),
-                                    "msg": "New User added",
-                                    "type": "2",
-                                  };
-                                  await obj3.set(GroupMetaData);
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text("User Added"),backgroundColor: Colors.green,));
-
-                              Navigator.of(context).pop();
-
-                            }
-
-
+                            Navigator.of(context).pop();
                           }
-                          else{
-                            // print("The user doesn't exists");
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(SnackBar(content: Text("The User Doesn't exist"),backgroundColor: Colors.red,));
-
-                          }
-
+                        } else {
+                          // print("The user doesn't exists");
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("The User Doesn't exist"),
+                            backgroundColor: Colors.red,
+                          ));
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

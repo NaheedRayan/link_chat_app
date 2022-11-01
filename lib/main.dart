@@ -48,6 +48,7 @@ Future main() async {
       loggedin = false;
     }
   });
+
   runApp(const MyApp());
 }
 

@@ -58,6 +58,10 @@ dependencies:
   #timestamp
   intl: ^0.17.0
 
+  #for settings_ui
+  flutter_settings_screens: ^0.3.0-null-safety
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

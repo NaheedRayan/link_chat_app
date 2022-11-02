@@ -1,16 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fast_rsa/fast_rsa.dart';
 
-
-class group_collection{
-
+class group_collection {
   var _created_at;
   var _created_by;
-  var _id ;
-  var _members ;
-  var _modified_at;
-  var _name ;
-  var _recent_messages ;
-  var _type ;
+  var _id;
 
+  var _members;
+
+  var _modified_at;
+  var _name;
+
+  var _recent_messages;
+
+  var _type;
 
   group_collection(this._created_at, this._created_by, this._id, this._members,
       this._modified_at, this._name, this._recent_messages, this._type);
@@ -63,53 +66,65 @@ class group_collection{
     _created_at = value;
   }
 
-
-
-
-
-  bool does_friendId_exist(String friend_id)
-  {
-    for(int i = 0 ; i < members.length ; i++)
-      {
-         // print(members[i]["user_id"]);
-        if(friend_id == members[i]["user_id"]){
-          return true ;
-        }
+  bool does_friendId_exist(String friend_id) {
+    for (int i = 0; i < members.length; i++) {
+      // print(members[i]["user_id"]);
+      if (friend_id == members[i]["user_id"]) {
+        return true;
       }
-    return false ;
+    }
+    return false;
   }
 
+  Future<void> sendMessage(
+      String userId, String groupId, String textMsg) async {
+    // en_msg = await RSA.encryptPKCS1v15(message, key.publicKey);
+
+    for (int i = 0; i < members.length; i++) {
+      //encrypting the message
+      var _en_msg =
+          await RSA.encryptPKCS1v15(textMsg, members[i]["public_key"]);
+      var _x;
+      if (userId == members[i]["user_id"]) {
+        _x = userId;
+      } else {
+        _x = members[i]["user_id"];
+      }
+      var msg_data = {
+        "msgText": _en_msg,
+        "sentAt": DateTime.now(),
+        "sentBy": userId,
+        "sentTo": _x,
+      };
+
+      await FirebaseFirestore.instance
+          .collection("chats")
+          .doc(groupId)
+          .collection("messages")
+          .doc()
+          .set(msg_data);
 
 
-  void add_user(String friend_id , var public_key)
-  {
+    }
+  }
 
-    // print(friend_id);
-    // print(public_key);
-
+  void add_user(String friend_id, var public_key) {
     var new_data = {
-      "public_key" : public_key,
-      "user_id" : friend_id,
+      "public_key": public_key,
+      "user_id": friend_id,
     };
-    members.add(new_data) ;
-
-
+    members.add(new_data);
   }
-
 
   //formatting for upload to firestore
-  Map<String,dynamic>toJson() => {
-    "createdAt" : _created_at,
-    "createdBy":_created_by,
-    "id": _id,
-    "members":_members,
-    "modifiedAt" : _modified_at,
-    "name":_name,
-    "recentMessages":recent_messages,
-    "type":"2"
-
-  };
-
-
-
+  Map<String, dynamic> toJson() => {
+        "createdAt": _created_at,
+        "createdBy": _created_by,
+        "id": _id,
+        "members": _members,
+        "modifiedAt": _modified_at,
+        "name": _name,
+        "recentMessages": recent_messages,
+        "type": "2"
+      };
 }

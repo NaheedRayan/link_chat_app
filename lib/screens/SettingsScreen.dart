@@ -85,7 +85,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 8),
                 buildPrivacy(context),
                 buildSecurity(context),
-                buildAccountInfo(context),
                 buildReportBug(context),
                 buildSendFeedback(context),
               ],
@@ -144,22 +143,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
     title: 'Privacy',
     subtitle: '',
     leading: IconWidget(icon: Icons.lock, color: Colors.blue),
-    onTap: () => Utils.showSnackBar(context, 'Clicked Privacy'),
+    onTap: () =>   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Privacy"),
+    )),
   );
 
   Widget buildSecurity(BuildContext context) => SimpleSettingsTile(
     title: 'Security',
     subtitle: '',
     leading: IconWidget(icon: Icons.security, color: Colors.red),
-    onTap: () => Utils.showSnackBar(context, 'Clicked Security'),
+    onTap: () =>   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Security"),
+    )),
   );
 
-  Widget buildAccountInfo(BuildContext context) => SimpleSettingsTile(
-    title: 'Account Info',
-    subtitle: '',
-    leading: IconWidget(icon: Icons.text_snippet, color: Colors.purple),
-    onTap: () => Utils.showSnackBar(context, 'Clicked Account Info'),
-  );
 
   Widget buildDeleteAccount() => SimpleSettingsTile(
     title: 'Delete Account',
@@ -174,6 +171,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     subtitle: '',
     leading: IconWidget(icon: Icons.bug_report, color: Colors.teal),
     onTap: (){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Report A Bug"),
+      ));
     },
   );
 
@@ -181,8 +181,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     title: 'Send Feedback',
     subtitle: '',
     leading: IconWidget(icon: Icons.thumb_up, color: Colors.purple),
-    onTap: (){
-    },
+    onTap: ()=>  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Send Feedback"),
+    )),
   );
 }
 

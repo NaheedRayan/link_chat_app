@@ -5,14 +5,17 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'add_friend.dart';
 import 'models/chatMessageModel.dart';
 import 'models/group_collection.dart';
+import 'models/message_chat.dart';
 
 class chatscreen extends StatefulWidget {
   final String groupname;
+  final String groupid;
 
-  const chatscreen({Key? key, required this.groupname}) : super(key: key);
+  const chatscreen({Key? key, required this.groupname, required this.groupid})
+      : super(key: key);
 
   @override
-  State<chatscreen> createState() => _chatscreenState(groupname);
+  State<chatscreen> createState() => _chatscreenState(groupname, groupid);
 }
 
 class _chatscreenState extends State<chatscreen> {
@@ -45,11 +48,13 @@ class _chatscreenState extends State<chatscreen> {
 
   final storage = new FlutterSecureStorage();
 
-  String groupChatId = "";
-  TextEditingController _text_message = new TextEditingController() ;
+  // String groupChatId = "ok";
+  TextEditingController _text_message = new TextEditingController();
 
   final String groupname;
-  _chatscreenState(String this.groupname);
+  final String groupid;
+
+  _chatscreenState(String this.groupname, String this.groupid);
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +139,7 @@ class _chatscreenState extends State<chatscreen> {
               Column(
                 children: <Widget>[
                   // List of messages
-                  // buildListMessage(),
+                  buildListMessage(),
 
                   // // Sticker
                   // isShowSticker ? buildSticker() : SizedBox.shrink(),
@@ -153,44 +158,243 @@ class _chatscreenState extends State<chatscreen> {
     );
   }
 
-  // Widget buildListMessage() {
-  //   var _limit = 50;
-  //   return Flexible(
-  //     child: groupChatId.isNotEmpty
-  //         ? StreamBuilder<QuerySnapshot>(
-  //             stream: chatProvider.getChatStream(groupChatId, _limit),
-  //             builder: (BuildContext context,
-  //                 AsyncSnapshot<QuerySnapshot> snapshot) {
-  //               if (snapshot.hasData) {
-  //                 listMessage = snapshot.data!.docs;
-  //                 if (listMessage.length > 0) {
-  //                   return ListView.builder(
-  //                     padding: EdgeInsets.all(10),
-  //                     itemBuilder: (context, index) =>
-  //                         buildItem(index, snapshot.data?.docs[index]),
-  //                     itemCount: snapshot.data?.docs.length,
-  //                     reverse: true,
-  //                     controller: listScrollController,
-  //                   );
-  //                 } else {
-  //                   return Center(child: Text("No message here yet..."));
-  //                 }
-  //               } else {
-  //                 return Center(
-  //                   child: CircularProgressIndicator(
-  //                     color: Colors.red,
-  //                   ),
-  //                 );
-  //               }
-  //             },
-  //           )
-  //         : Center(
-  //             child: CircularProgressIndicator(
-  //               color: Colors.red,
-  //             ),
-  //           ),
-  //   );
-  // }
+  Widget buildListMessage() {
+    var _limit = 50;
+    return Flexible(
+      child: groupid.isNotEmpty
+          ? StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("chats")
+                  .doc(groupid)
+                  .collection("messages")
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  var listMessage = snapshot.data!.docs;
+                  if (listMessage.length > 0) {
+                    return ListView.builder(
+                      padding: EdgeInsets.all(10),
+
+                      itemBuilder: (context, index) =>
+                          buildItem(index, snapshot.data?.docs[index]),
+
+                      itemCount: snapshot.data?.docs.length,
+                      reverse: true,
+                      // controller: listScrollController,
+                    );
+                  } else {
+                    return Center(child: Text("No message here yet..."));
+                  }
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.red,
+                    ),
+                  );
+                }
+              },
+            )
+          : Center(
+              child: CircularProgressIndicator(
+                color: Colors.red,
+              ),
+            ),
+    );
+  }
+  Widget buildItem(int index, DocumentSnapshot? document) {
+    if (document != null) {
+      MessageChat messageChat = MessageChat.fromDocument(document);
+      // if (messageChat.idFrom == currentUserId) {
+      if (true) {
+        // var x =  storage.read(key :"pri_key");
+        // print(x);
+        // Right (my message)
+        return Row(
+          children: <Widget>[
+            Container(
+              child: Text(
+                messageChat.msgText,
+                style: TextStyle(color: Colors.white),
+              ),
+              padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+              width:300,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(8)),
+              // margin: EdgeInsets.only(
+              //     bottom: isLastMessageRight(index) ? 20 : 10, right: 10),
+            )
+          ],
+          mainAxisAlignment: MainAxisAlignment.end,
+        );
+      }
+      else {
+        // Left (peer message)
+        return Container(
+          child: Column(
+            children: <Widget>[
+              // Row(
+              //   children: <Widget>[
+              //     isLastMessageLeft(index)
+              //         ? Material(
+              //             child: Image.network(
+              //               widget.arguments.peerAvatar,
+              //               loadingBuilder: (BuildContext context, Widget child,
+              //                   ImageChunkEvent? loadingProgress) {
+              //                 if (loadingProgress == null) return child;
+              //                 return Center(
+              //                   child: CircularProgressIndicator(
+              //                     color: ColorConstants.themeColor,
+              //                     value: loadingProgress.expectedTotalBytes !=
+              //                             null
+              //                         ? loadingProgress.cumulativeBytesLoaded /
+              //                             loadingProgress.expectedTotalBytes!
+              //                         : null,
+              //                   ),
+              //                 );
+              //               },
+              //               errorBuilder: (context, object, stackTrace) {
+              //                 return Icon(
+              //                   Icons.account_circle,
+              //                   size: 35,
+              //                   color: ColorConstants.greyColor,
+              //                 );
+              //               },
+              //               width: 35,
+              //               height: 35,
+              //               fit: BoxFit.cover,
+              //             ),
+              //             borderRadius: BorderRadius.all(
+              //               Radius.circular(18),
+              //             ),
+              //             clipBehavior: Clip.hardEdge,
+              //           )
+              //         : Container(width: 35),
+              //     messageChat.type == TypeMessage.text
+              //         ? Container(
+              //             child: Text(
+              //               messageChat.content,
+              //               style: TextStyle(color: Colors.white),
+              //             ),
+              //             padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+              //             width: 200,
+              //             decoration: BoxDecoration(
+              //                 color: ColorConstants.primaryColor,
+              //                 borderRadius: BorderRadius.circular(8)),
+              //             margin: EdgeInsets.only(left: 10),
+              //           )
+              //         : messageChat.type == TypeMessage.image
+              //             ? Container(
+              //                 child: TextButton(
+              //                   child: Material(
+              //                     child: Image.network(
+              //                       messageChat.content,
+              //                       loadingBuilder: (BuildContext context,
+              //                           Widget child,
+              //                           ImageChunkEvent? loadingProgress) {
+              //                         if (loadingProgress == null) return child;
+              //                         return Container(
+              //                           decoration: BoxDecoration(
+              //                             color: ColorConstants.greyColor2,
+              //                             borderRadius: BorderRadius.all(
+              //                               Radius.circular(8),
+              //                             ),
+              //                           ),
+              //                           width: 200,
+              //                           height: 200,
+              //                           child: Center(
+              //                             child: CircularProgressIndicator(
+              //                               color: ColorConstants.themeColor,
+              //                               value: loadingProgress
+              //                                           .expectedTotalBytes !=
+              //                                       null
+              //                                   ? loadingProgress
+              //                                           .cumulativeBytesLoaded /
+              //                                       loadingProgress
+              //                                           .expectedTotalBytes!
+              //                                   : null,
+              //                             ),
+              //                           ),
+              //                         );
+              //                       },
+              //                       errorBuilder:
+              //                           (context, object, stackTrace) =>
+              //                               Material(
+              //                         child: Image.asset(
+              //                           'images/img_not_available.jpeg',
+              //                           width: 200,
+              //                           height: 200,
+              //                           fit: BoxFit.cover,
+              //                         ),
+              //                         borderRadius: BorderRadius.all(
+              //                           Radius.circular(8),
+              //                         ),
+              //                         clipBehavior: Clip.hardEdge,
+              //                       ),
+              //                       width: 200,
+              //                       height: 200,
+              //                       fit: BoxFit.cover,
+              //                     ),
+              //                     borderRadius:
+              //                         BorderRadius.all(Radius.circular(8)),
+              //                     clipBehavior: Clip.hardEdge,
+              //                   ),
+              //                   onPressed: () {
+              //                     Navigator.push(
+              //                       context,
+              //                       MaterialPageRoute(
+              //                         builder: (context) => FullPhotoPage(
+              //                             url: messageChat.content),
+              //                       ),
+              //                     );
+              //                   },
+              //                   style: ButtonStyle(
+              //                       padding:
+              //                           MaterialStateProperty.all<EdgeInsets>(
+              //                               EdgeInsets.all(0))),
+              //                 ),
+              //                 margin: EdgeInsets.only(left: 10),
+              //               )
+              //             : Container(
+              //                 child: Image.asset(
+              //                   'images/${messageChat.content}.gif',
+              //                   width: 100,
+              //                   height: 100,
+              //                   fit: BoxFit.cover,
+              //                 ),
+              //                 margin: EdgeInsets.only(
+              //                     bottom: isLastMessageRight(index) ? 20 : 10,
+              //                     right: 10),
+              //               ),
+              //   ],
+              // ),
+              //
+              // // Time
+              // isLastMessageLeft(index)
+              //     ? Container(
+              //         child: Text(
+              //           DateFormat('dd MMM kk:mm').format(
+              //               DateTime.fromMillisecondsSinceEpoch(
+              //                   int.parse(messageChat.timestamp))),
+              //           style: TextStyle(
+              //               color: ColorConstants.greyColor,
+              //               fontSize: 12,
+              //               fontStyle: FontStyle.italic),
+              //         ),
+              //         margin: EdgeInsets.only(left: 50, top: 5, bottom: 5),
+              //       )
+              //     : SizedBox.shrink()
+            ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          margin: EdgeInsets.only(bottom: 10),
+        );
+      }
+    } else {
+      return SizedBox.shrink();
+    }
+  }
 
   Widget buildInput() {
     return Container(
@@ -249,8 +453,6 @@ class _chatscreenState extends State<chatscreen> {
               child: IconButton(
                 icon: Icon(Icons.send_rounded),
                 onPressed: () async {
-
-
                   // getting the number from storage
                   var number = await storage.read(key: "number");
                   var groupId = number! + "+" + groupname;
@@ -270,13 +472,12 @@ class _chatscreenState extends State<chatscreen> {
                       group_data["recentMessages"],
                       group_data["type"]);
 
-
-                  await group_collection_obj.sendMessage(number, groupId, _text_message.text.trim());
+                  await group_collection_obj.sendMessage(
+                      number, groupId, _text_message.text.trim());
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("Message Sent"),
                     backgroundColor: Colors.green,
                   ));
-
 
                   // print(_text_message.text);
                   // print(groupname);
@@ -298,4 +499,5 @@ class _chatscreenState extends State<chatscreen> {
           color: Colors.white),
     );
   }
+
 }

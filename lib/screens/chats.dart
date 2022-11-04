@@ -131,8 +131,8 @@ class _ChatsState extends State<Chats> {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                       builder: (context) => chatscreen(
-                                        groupname: data.docs[index]
-                                            ["group_name"],
+                                        groupname: data.docs[index]["group_name"],
+                                        groupid: data.docs[index]["group_id"],
                                       ),
                                     ));
                                   },
@@ -207,6 +207,8 @@ class _ChatsState extends State<Chats> {
     var number = await storage.read(key: "number");
     print("-------------------------");
     print(number);
+    // var x = await storage.read(key :"pri_key");
+    // print(x);
     return number;
   }
 }

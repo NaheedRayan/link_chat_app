@@ -103,8 +103,6 @@ class group_collection {
           .collection("messages")
           .doc()
           .set(msg_data);
-
-
     }
   }
 
@@ -127,4 +125,17 @@ class group_collection {
         "recentMessages": recent_messages,
         "type": "2"
       };
+
+  /////////////////////////////////////
+  // var msgText;
+  // var sentAt;
+  // var sentBy;
+  // var sentTo;
+  //
+  // void setMsg(var msgText, var sentAt, var sentBy, var sentTo,) {
+  //   this.msgText = msgText ;
+  //   this.sentAt = sentAt ;
+  //   this.sentBy = sentBy ;
+  //   this.sentTo = sentTo ;
+  // }
 }

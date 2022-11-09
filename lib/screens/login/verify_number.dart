@@ -183,7 +183,7 @@ class _VerifyNumberState extends State<VerifyNumber> {
               //     CupertinoPageRoute(builder: (context) => HomePage()),
               //         (route) => false);
 
-            } else {
+            }
               // writing phone number in shared preferences
                 await storage.write(key: "number", value: phoneNumber);
 
@@ -191,7 +191,7 @@ class _VerifyNumberState extends State<VerifyNumber> {
                   context,
                   CupertinoPageRoute(builder: (context) => HomePage()),
                   (route) => false);
-            }
+
           })
           .whenComplete(() {})
           .onError((error, stackTrace) {

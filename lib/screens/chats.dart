@@ -207,8 +207,8 @@ class _ChatsState extends State<Chats> {
     var number = await storage.read(key: "number");
     print("-------------------------");
     print(number);
-    // var x = await storage.read(key :"pri_key");
-    // print(x);
+    var x = await storage.read(key :"pri_key");
+    print(x);
     return number;
   }
 }

@@ -78,9 +78,9 @@ class group_collection {
 
   Future<void> sendMessage(
       String userId, String groupId, String textMsg) async {
-    // en_msg = await RSA.encryptPKCS1v15(message, key.publicKey);
-
-    for (int i = 0; i < members.length; i++) {
+      var userInstance = await FirebaseFirestore.instance.collection("user").doc(userId).get();
+      var username = userInstance["displayName"];
+      for (int i = 0; i < members.length; i++) {
       //encrypting the message
       var _en_msg =
           await RSA.encryptPKCS1v15(textMsg, members[i]["public_key"]);
@@ -95,6 +95,7 @@ class group_collection {
         "sentAt": DateTime.now(),
         "sentBy": userId,
         "sentTo": _x,
+        "sentByUserName":username
       };
 
       await FirebaseFirestore.instance
@@ -126,16 +127,4 @@ class group_collection {
         "type": "2"
       };
 
-  /////////////////////////////////////
-  // var msgText;
-  // var sentAt;
-  // var sentBy;
-  // var sentTo;
-  //
-  // void setMsg(var msgText, var sentAt, var sentBy, var sentTo,) {
-  //   this.msgText = msgText ;
-  //   this.sentAt = sentAt ;
-  //   this.sentBy = sentBy ;
-  //   this.sentTo = sentTo ;
-  // }
 }

@@ -106,7 +106,8 @@ class _VerifyNumberState extends State<VerifyNumber> {
                   content:
                       Text("Please wait while the key is being generated")));
 
-              key = await RSA.generate(3072);
+              // key = await RSA.generate(3072);
+              key = await RSA.generate(2048);
               setState(() {
                 pub_key = key.publicKey;
                 pri_key = key.privateKey;
@@ -177,6 +178,11 @@ class _VerifyNumberState extends State<VerifyNumber> {
 
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text("User Is Added")));
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     CupertinoPageRoute(builder: (context) => HomePage()),
+              //         (route) => false);
+
             } else {
               // writing phone number in shared preferences
                 await storage.write(key: "number", value: phoneNumber);

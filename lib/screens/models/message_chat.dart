@@ -28,7 +28,6 @@ class MessageChat {
     var sentBy = doc.get("sentBy");
     var sentTo = doc.get("sentTo");
 
-    print(sentAt);
 
     return MessageChat(msgText: msgText, sentAt: sentAt, sentBy: sentBy, sentTo: sentTo);
   }

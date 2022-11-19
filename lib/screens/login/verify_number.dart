@@ -176,7 +176,7 @@ class _VerifyNumberState extends State<VerifyNumber> {
               };
               await obj3.set(GroupMetaData);
 
-              ScaffoldMessenger.of(context)
+              await ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text("User Is Added")));
               // Navigator.pushAndRemoveUntil(
               //     context,

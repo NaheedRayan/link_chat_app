@@ -8,7 +8,7 @@ class Calls extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text('Calls'),
+        child: Text('This function will be available soon'),
       ),
     );
   }

@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'add_friend.dart';
-import 'models/chatMessageModel.dart';
+// import 'models/chatMessageModel.dart';
 import 'models/group_collection.dart';
-import 'models/message_chat.dart';
 
 class chatscreen extends StatefulWidget {
   final String groupname;
@@ -20,18 +19,45 @@ class chatscreen extends StatefulWidget {
 }
 
 class _chatscreenState extends State<chatscreen> {
-  // var msg_list = [];
+  ///////////////////////////////////////////////////////
+  //  var msg_list = [];
 
   final storage = new FlutterSecureStorage();
 
   // String groupChatId = "ok";
   TextEditingController _text_message = new TextEditingController();
+  final ScrollController listScrollController = ScrollController();
 
   final String groupname;
   final String groupid;
 
+  int _limit = 20;
+  int _limitIncrement = 20;
+
   _chatscreenState(String this.groupname, String this.groupid);
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    listScrollController.addListener(_scrollListener);
+
+  }
+
+
+  // for loading when we scroll
+  _scrollListener() {
+    if (!listScrollController.hasClients) return;
+    if (listScrollController.offset >= listScrollController.position.maxScrollExtent &&
+        !listScrollController.position.outOfRange ) {
+      // print(_limit);
+
+      setState(() {
+        _limit += _limitIncrement;
+      });
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +104,7 @@ class _chatscreenState extends State<chatscreen> {
               ),
             ],
             offset: Offset(0, 60),
-            color: Colors.white60,
+            color: Colors.green[100],
             elevation: 2,
             // on selected we show the dialog box
             onSelected: (value) {
@@ -135,7 +161,7 @@ class _chatscreenState extends State<chatscreen> {
   }
 
   Widget buildListMessage() {
-    var _limit = 50;
+
     return Flexible(
       child: groupid.isNotEmpty
           ? StreamBuilder<QuerySnapshot>(
@@ -144,7 +170,7 @@ class _chatscreenState extends State<chatscreen> {
                   .doc(groupid)
                   .collection("messages")
                   .orderBy("sentAt", descending: true)
-              // .limit(10)
+                  .limit(_limit)
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -165,13 +191,12 @@ class _chatscreenState extends State<chatscreen> {
 
                               itemCount: snapshot.data?.length,
                               reverse: true,
-                              // controller: listScrollController,
+                              controller: listScrollController,
                             );
                           } else {
                             return CircularProgressIndicator();
                           }
                         });
-
                   } else {
                     return Center(child: Text("No message here yet..."));
                   }
@@ -195,7 +220,7 @@ class _chatscreenState extends State<chatscreen> {
   Widget buildItem(int index, document) {
     if (document != null) {
       if (document["sentBy"] == document["sentTo"]) {
-      //   if (false) {
+        //   if (false) {
         // Right (my message)
         return Row(
           children: <Widget>[
@@ -207,12 +232,11 @@ class _chatscreenState extends State<chatscreen> {
               ),
               padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
               // width: 300,
-              constraints: BoxConstraints( maxWidth: 270),
+              constraints: BoxConstraints(maxWidth: 270),
               decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(8)),
-              margin: EdgeInsets.only(
-                 bottom: 3  ),
+              margin: EdgeInsets.only(bottom: 3),
             )
           ],
           mainAxisAlignment: MainAxisAlignment.end,
@@ -227,7 +251,7 @@ class _chatscreenState extends State<chatscreen> {
                   document["sentByUserName"],
                   style: TextStyle(color: Colors.grey),
                 ),
-                margin: EdgeInsets.only(left: 4,bottom: 2),
+                margin: EdgeInsets.only(left: 4, bottom: 2),
               ),
               Container(
                 child: Text(
@@ -236,21 +260,19 @@ class _chatscreenState extends State<chatscreen> {
                 ),
                 padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
                 // width: 200,
-                constraints: BoxConstraints( maxWidth: 270),
+                constraints: BoxConstraints(maxWidth: 270),
                 decoration: BoxDecoration(
                     color: Colors.blue[400],
                     borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.only(bottom: 3),
               )
-
             ],
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
           // margin: EdgeInsets.only(bottom: 10),
         );
       }
-    }
-    else {
+    } else {
       return SizedBox.shrink();
     }
   }
@@ -334,6 +356,14 @@ class _chatscreenState extends State<chatscreen> {
                       group_data["recentMessages"],
                       group_data["type"]);
 
+                  var msg_data = {
+                    "msgText": _text_message.text.trim(),
+                    "sentAt": DateTime.now(),
+                    "sentBy": number,
+                    "sentTo": number,
+                    "sentByUserName": "test"
+                  };
+                  // setState(() => msg_list.add(msg_data));
                   await group_collection_obj.sendMessage(
                       number!, groupid, _text_message.text.trim());
                   _text_message.clear();
@@ -366,26 +396,24 @@ class _chatscreenState extends State<chatscreen> {
   decryptMsg(List<QueryDocumentSnapshot<Object?>> listMessage) async {
     var private_key = await storage.read(key: "pri_key");
     var userid = await storage.read(key: "number");
-    print(private_key);
+    // print(private_key);
 
     var msg_list = [];
     for (int i = 0; i < listMessage.length; i++) {
       if (listMessage[i].get("sentTo") == userid) {
 
-        // if(msg_list[msg_list.length - 1].get("sentAt") !=  )
-        // print(listMessage[i].get("sentAt") );
-        print("--------------+--------------");
+        // print("--------------$i--------------");
 
         var de_msg = await RSA.decryptPKCS1v15(
             listMessage[i].get("msgText"), private_key!);
-        print("++++++++++++++++++++++++++++++");
+        // print("++++++++++++++$i++++++++++++++");
 
         var data = {
           "msgText": de_msg,
           "sentAt": listMessage[i].get("sentAt"),
           "sentBy": listMessage[i].get("sentBy"),
           "sentTo": listMessage[i].get("sentTo"),
-          "sentByUserName":listMessage[i].get("sentByUserName")
+          "sentByUserName": listMessage[i].get("sentByUserName")
         };
         msg_list.add(data);
         // print(de_msg);

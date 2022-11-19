@@ -81,10 +81,7 @@ class MyApp extends StatelessWidget {
               brightness: Brightness.light,
               primaryColor: Color(0xFF08C187),
             ),
-            // theme: CupertinoThemeData(
-            //   brightness: Brightness.light,
-            //   primaryColor: Color(0xFF08C187),
-            // ),
+
             debugShowCheckedModeBanner: false,
           )
         : MaterialApp(
@@ -93,10 +90,7 @@ class MyApp extends StatelessWidget {
               brightness: Brightness.light,
               primaryColor: Color(0xFF08C187),
             ),
-            // theme: CupertinoThemeData(
-            //   brightness: Brightness.light,
-            //   primaryColor: Color(0xFF08C187),
-            // ),
+
             debugShowCheckedModeBanner: false,
           );
   }
@@ -111,26 +105,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var screens = [Chats(), Calls(), People(), SettingsScreen()];
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
-  ];
 
   int _selectedIndex = 0;
 

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fast_rsa/fast_rsa.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'add_friend.dart';
@@ -31,7 +32,7 @@ class _chatscreenState extends State<chatscreen> {
   final String groupname;
   final String groupid;
 
-  int _limit = 20;
+  int _limit = 40;
   int _limitIncrement = 20;
 
   _chatscreenState(String this.groupname, String this.groupid);
@@ -50,7 +51,7 @@ class _chatscreenState extends State<chatscreen> {
     if (!listScrollController.hasClients) return;
     if (listScrollController.offset >= listScrollController.position.maxScrollExtent &&
         !listScrollController.position.outOfRange ) {
-      // print(_limit);
+      print(_limit);
 
       setState(() {
         _limit += _limitIncrement;
@@ -110,9 +111,7 @@ class _chatscreenState extends State<chatscreen> {
             onSelected: (value) {
               // if value 1 show dialog
               if (value == 1) {
-                // _showDialog(context);
-                // ScaffoldMessenger.of(context)
-                //     .showSnackBar(SnackBar(content: Text("button 1"),));
+               ;
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => add_friend(
                     group_name: widget.groupname,
@@ -334,6 +333,9 @@ class _chatscreenState extends State<chatscreen> {
               child: IconButton(
                 icon: Icon(Icons.send_rounded),
                 onPressed: () async {
+
+                  HapticFeedback.mediumImpact();
+
                   // getting the number from storage
                   var number = await storage.read(key: "number");
                   // var groupId = number! + "+" + groupname;
@@ -396,7 +398,7 @@ class _chatscreenState extends State<chatscreen> {
   decryptMsg(List<QueryDocumentSnapshot<Object?>> listMessage) async {
     var private_key = await storage.read(key: "pri_key");
     var userid = await storage.read(key: "number");
-    // print(private_key);
+    print(private_key);
 
     var msg_list = [];
     for (int i = 0; i < listMessage.length; i++) {

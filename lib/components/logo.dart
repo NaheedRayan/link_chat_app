@@ -18,7 +18,7 @@ class Logo extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: Image(
-            image: AssetImage('images/whatsapp.png'), fit: BoxFit.fitWidth),
+            image: AssetImage('images/whatsapp1.png'), fit: BoxFit.fitWidth),
       ),
     );
   }

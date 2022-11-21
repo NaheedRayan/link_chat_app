@@ -88,6 +88,7 @@ flutter:
   assets:
     - images/bg.jpg
     - images/whatsapp.png
+    - images/whatsapp1.png
     - images/ic_launcher.png
     - images/profile_pic.png
     - assets/CountryCodes.json

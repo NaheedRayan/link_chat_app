@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class connected_friends{
   var _userid;
@@ -37,17 +36,16 @@ class connected_friends{
 
 
     var final_conn_user_list = [];
-    conn_user.forEach((element) async {
-      var userdata = await FirebaseFirestore.instance.collection("user").doc(element).get();
+    var x = conn_user.toList();
+    for(int i = 0 ; i < x.length ; i++){
+      var userdata = await FirebaseFirestore.instance.collection("user").doc(x[i]).get();
       var data = {
         "username" : userdata["displayName"],
         "email":userdata["email"],
-        "userid":element,
+        "userid":x[i],
       };
       final_conn_user_list.add(data);
-      // print(data);
-    });
-
+    }
     return final_conn_user_list ;
   }
 }

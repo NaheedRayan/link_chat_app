@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:link_chat_app/components/profile_pic.dart';
-import 'package:link_chat_app/main.dart';
 import 'package:link_chat_app/screens/chatscreen.dart';
 import 'package:link_chat_app/screens/make_groups.dart';
-
-import '../components/logo.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../settings/AccountPage.dart';
 
 class Chats extends StatefulWidget {
   const Chats({Key? key}) : super(key: key);
@@ -24,14 +21,12 @@ class _ChatsState extends State<Chats> {
 
   get prefixIcon => null;
 
-  static get groupname => null;
+
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
 
     return FutureBuilder<dynamic>(
-
         future: callAsyncFetch(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
@@ -44,16 +39,27 @@ class _ChatsState extends State<Chats> {
                   title: Text("Link"),
 
                   actions: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
-                      child: Container(
-                        width: 30,
-                        child: Image.asset(
-                          'images/profile_pic.png',
-                        ),
-                      ),
+                    IconButton(
+                      icon: Image.asset('images/profile_pic.png'),
+                      iconSize: 25,
+                      onPressed: () async {
+                        final storage = new FlutterSecureStorage();
+                        var number = await storage.read(key: "number");
+                        var user = await FirebaseFirestore.instance
+                            .collection("user")
+                            .doc(number)
+                            .get();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => accountpage(
+                                      username: user["displayName"],
+                                      email: user["email"],
+                                      number: user["uid"],
+                                      public_key: user["public_key"],
+                                    )));
+                      },
                     ),
-                    Icon(Icons.more_vert),
                   ],
                   backgroundColor: Theme.of(context).primaryColor,
                 ),
@@ -131,7 +137,8 @@ class _ChatsState extends State<Chats> {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                       builder: (context) => chatscreen(
-                                        groupname: data.docs[index]["group_name"],
+                                        groupname: data.docs[index]
+                                            ["group_name"],
                                         groupid: data.docs[index]["group_id"],
                                       ),
                                     ));
@@ -183,15 +190,11 @@ class _ChatsState extends State<Chats> {
                   backgroundColor: Theme.of(context).primaryColor,
                   foregroundColor: Colors.white,
                   onPressed: () {
-
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => make_groups(),
                       fullscreenDialog: true,
                     ));
                     // Respond to button press
-
-
-
                   },
                   child: Icon(Icons.add),
                   // mini: true,
@@ -205,10 +208,14 @@ class _ChatsState extends State<Chats> {
   callAsyncFetch() async {
     final storage = new FlutterSecureStorage();
     var number = await storage.read(key: "number");
-    print("-------------------------");
-    print(number);
-    var x = await storage.read(key :"pri_key");
-    print(x);
+    var x = await storage.read(key: "pri_key");
+    if (x == "empty") {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Private Key not found"),
+        backgroundColor: Colors.red,
+      ));
+    }
+
     return number;
   }
 }

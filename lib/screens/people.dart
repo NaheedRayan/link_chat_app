@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -16,13 +15,6 @@ class _PeopleState extends State<People> {
       new TextEditingController();
 
 
-  @override
-  initState() {
-    print("initState Called");
-    // final storage = new FlutterSecureStorage();
-    // var number = await storage.read(key: "number");
-  }
-
 
   get prefixIcon => null;
   var connected_user_list = [];
@@ -34,7 +26,7 @@ class _PeopleState extends State<People> {
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             connected_user_list = snapshot.data;
-            print("outside $connected_user_list");
+            // print("outside $connected_user_list");
 
 
             return Scaffold(
@@ -136,10 +128,51 @@ class _PeopleState extends State<People> {
                       itemCount: connected_user_list.length,
                       itemBuilder: (context, index) {
                         return ListTile(
-                          title: Text("ok"),
-                          subtitle: Text("kol"),
+                          //new code....................................................
+                          onTap: () {
+                            // //navigator for new chatscreen for groups or user
+                            // Navigator.of(context)
+                            //     .push(MaterialPageRoute(
+                            //   builder: (context) => chatscreen(
+                            //     groupname: data.docs[index]["group_name"],
+                            //     groupid: data.docs[index]["group_id"],
+                            //   ),
+                            // ));
+                          },
 
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 18.0,
+                            child: ClipOval(
+                              child: Image.asset(
+                                "images/profile_pic.png",
+                              ),
+                            ),
+                          ),
+                          title: Text(
+                            "${connected_user_list[index]["username"]}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17.0,
+                            ),
+                          ),
+                          subtitle: Text(
+                            "Email     : ${connected_user_list[index]['email']}\nNumber : ${connected_user_list[index]["userid"]}" ,
 
+                            style: TextStyle(
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          isThreeLine: true,
+
+                          trailing: Text(
+
+                            "Active",
+                            style: const TextStyle(
+                              color: Colors.green,
+                              fontSize: 13,
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -148,7 +181,8 @@ class _PeopleState extends State<People> {
               ),
 
             );
-          } else {
+          }
+          else {
             return CircularProgressIndicator();
           }
         });
@@ -158,46 +192,11 @@ class _PeopleState extends State<People> {
     final storage = new FlutterSecureStorage();
     var number = await storage.read(key: "number");
 
-    // var datalist = new connected_friends(number);
+    var datalist = new connected_friends(number);
     // print(datalist.run());
 
-    var userdata = await FirebaseFirestore.instance.collection("user")
-        .doc(number)
-        .get();
-
-
-    var _groups_id_list = userdata['groups'];
-
-    var conn_user = <String>{};
-
-    for(int i = 0 ; i < _groups_id_list.length ; i++){
-      var groupdata = await FirebaseFirestore.instance.collection("group").doc(_groups_id_list[i]).get();
-      var members = groupdata["members"];
-      for(int j = 0 ; j < members.length ; j++){
-        conn_user.add(members[j]["user_id"]);
-      }
-    }
-    // print(_groups_id_list);
-    // print(conn_user);
-
-
-    var final_conn_user_list = [];
-    conn_user.forEach((element) async {
-      var userdata = await FirebaseFirestore.instance.collection("user").doc(element).get();
-      var data = {
-        "username" : userdata["displayName"],
-        "email":userdata["email"],
-        "userid":element,
-      };
-      final_conn_user_list.add(data);
-      // print(data);
-    });
-
-
-    connected_user_list = final_conn_user_list ;
-
-    // var x = await datalist.run();
-    print("Inside fun   $final_conn_user_list");
-    return final_conn_user_list;
+    var x = await datalist.run();
+    // print("Inside fun   $x");
+    return x;
   }
 }

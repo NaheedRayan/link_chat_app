@@ -140,6 +140,7 @@ class _ChatsState extends State<Chats> {
                                         groupname: data.docs[index]
                                             ["group_name"],
                                         groupid: data.docs[index]["group_id"],
+                                        userid:number,
                                       ),
                                     ));
                                   },

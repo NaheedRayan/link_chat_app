@@ -5,18 +5,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'add_friend.dart';
+
 // import 'models/chatMessageModel.dart';
 import 'models/group_collection.dart';
 
 class chatscreen extends StatefulWidget {
   final String groupname;
   final String groupid;
+  final String userid;
 
-  const chatscreen({Key? key, required this.groupname, required this.groupid})
+  const chatscreen({Key? key, required this.groupname, required this.groupid, required this.userid})
       : super(key: key);
 
   @override
-  State<chatscreen> createState() => _chatscreenState(groupname, groupid);
+  State<chatscreen> createState() => _chatscreenState(groupname, groupid,userid);
 }
 
 class _chatscreenState extends State<chatscreen> {
@@ -31,34 +33,34 @@ class _chatscreenState extends State<chatscreen> {
 
   final String groupname;
   final String groupid;
+  final String userid;
 
   int _limit = 40;
   int _limitIncrement = 20;
 
-  _chatscreenState(String this.groupname, String this.groupid);
+  _chatscreenState(String this.groupname, String this.groupid, String this.userid);
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     listScrollController.addListener(_scrollListener);
-
   }
-
 
   // for loading when we scroll
   _scrollListener() {
     if (!listScrollController.hasClients) return;
-    if (listScrollController.offset >= listScrollController.position.maxScrollExtent &&
-        !listScrollController.position.outOfRange ) {
-      print(_limit);
+    if (listScrollController.offset >=
+            listScrollController.position.maxScrollExtent &&
+        !listScrollController.position.outOfRange) {
+      // print(_limit);
 
       setState(() {
         _limit += _limitIncrement;
       });
     }
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +74,7 @@ class _chatscreenState extends State<chatscreen> {
                 value: 1,
                 // row has two child icon and text.
                 child: Row(
-                  children: [
+                  children: const [
                     Icon(
                       Icons.people_alt,
                       color: Colors.black54,
@@ -90,7 +92,7 @@ class _chatscreenState extends State<chatscreen> {
                 value: 2,
                 // row has two child icon and text
                 child: Row(
-                  children: [
+                  children: const [
                     Icon(
                       Icons.chrome_reader_mode,
                       color: Colors.black54,
@@ -111,7 +113,7 @@ class _chatscreenState extends State<chatscreen> {
             onSelected: (value) {
               // if value 1 show dialog
               if (value == 1) {
-               ;
+                ;
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => add_friend(
                     group_name: widget.groupname,
@@ -159,15 +161,18 @@ class _chatscreenState extends State<chatscreen> {
     );
   }
 
-  Widget buildListMessage() {
+  ///////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////     Building List of Messages       //////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////
 
+  Widget buildListMessage() {
     return Flexible(
       child: groupid.isNotEmpty
           ? StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection("chats")
                   .doc(groupid)
-                  .collection("messages")
+                  .collection(userid)//changes
                   .orderBy("sentAt", descending: true)
                   .limit(_limit)
                   .snapshots(),
@@ -187,7 +192,6 @@ class _chatscreenState extends State<chatscreen> {
                               padding: EdgeInsets.all(10),
                               itemBuilder: (context, index) =>
                                   buildItem(index, snapshot.data?[index]),
-
                               itemCount: snapshot.data?.length,
                               reverse: true,
                               controller: listScrollController,
@@ -326,22 +330,21 @@ class _chatscreenState extends State<chatscreen> {
             ),
           ),
 
-          // Button send message
+          ///////////////////////////////////////////////////////////////////////////////////////
+          //////////////////////////////     Send message button        /////////////////////////
+          ///////////////////////////////////////////////////////////////////////////////////////
+
           Material(
             child: Container(
               // margin: EdgeInsets.symmetric(horizontal: 8),
               child: IconButton(
                 icon: Icon(Icons.send_rounded),
                 onPressed: () async {
-
                   HapticFeedback.mediumImpact();
 
                   // getting the number from storage
                   var number = await storage.read(key: "number");
                   // var groupId = number! + "+" + groupname;
-
-                  /////////////////////////////////////////////////////////////////////////////wrong
-                  // print(groupId);
 
                   var group_data = await FirebaseFirestore.instance
                       .collection("group")
@@ -365,14 +368,12 @@ class _chatscreenState extends State<chatscreen> {
                     "sentTo": number,
                     "sentByUserName": "test"
                   };
-                  // setState(() => msg_list.add(msg_data));
+                  ///////////////////////////////////////////////////////////////////////////////////////
+                  /////////////////////////////////     Sending message        //////////////////////////
+                  ///////////////////////////////////////////////////////////////////////////////////////
                   await group_collection_obj.sendMessage(
                       number!, groupid, _text_message.text.trim());
                   _text_message.clear();
-                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  //   content: Text("Message Sent"),
-                  //   backgroundColor: Colors.green,
-                  // ));
 
                   // print(_text_message.text);
                   // print(groupname);
@@ -403,7 +404,6 @@ class _chatscreenState extends State<chatscreen> {
     var msg_list = [];
     for (int i = 0; i < listMessage.length; i++) {
       if (listMessage[i].get("sentTo") == userid) {
-
         // print("--------------$i--------------");
 
         var de_msg = await RSA.decryptPKCS1v15(

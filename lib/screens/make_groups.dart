@@ -133,6 +133,7 @@ class _make_groupsState extends State<make_groups> {
                           builder: (context) => chatscreen(
                             groupname: _groupName.text.trim() ,
                             groupid: _ModifiedGroupId,
+                            userid: number,
                           ),
                         ));
                       }

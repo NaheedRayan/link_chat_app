@@ -133,6 +133,7 @@ class _VerifyNumberState extends State<VerifyNumber> {
                 "photoURL": "",
                 "uid": phoneNumber,
                 "public_key": pub_key,
+                "status":"Online"
               };
               await obj1.set(UserData);
 

@@ -43,6 +43,7 @@ class connected_friends{
         "username" : userdata["displayName"],
         "email":userdata["email"],
         "userid":x[i],
+        "status":userdata["status"]
       };
       final_conn_user_list.add(data);
     }

@@ -14,20 +14,17 @@ class _PeopleState extends State<People> {
   TextEditingController searchTextEditingController =
       new TextEditingController();
 
-
-
   get prefixIcon => null;
   var connected_user_list = [];
+
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder<dynamic>(
         future: callAsyncFetch(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             connected_user_list = snapshot.data;
             // print("outside $connected_user_list");
-
 
             return Scaffold(
               appBar: AppBar(
@@ -128,61 +125,63 @@ class _PeopleState extends State<People> {
                       itemCount: connected_user_list.length,
                       itemBuilder: (context, index) {
                         return ListTile(
-                          //new code....................................................
-                          onTap: () {
-                            // //navigator for new chatscreen for groups or user
-                            // Navigator.of(context)
-                            //     .push(MaterialPageRoute(
-                            //   builder: (context) => chatscreen(
-                            //     groupname: data.docs[index]["group_name"],
-                            //     groupid: data.docs[index]["group_id"],
-                            //   ),
-                            // ));
-                          },
-
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 18.0,
-                            child: ClipOval(
-                              child: Image.asset(
-                                "images/profile_pic.png",
+                            //new code....................................................
+                            onTap: () {
+                              // //navigator for new chatscreen for groups or user
+                              // Navigator.of(context)
+                              //     .push(MaterialPageRoute(
+                              //   builder: (context) => chatscreen(
+                              //     groupname: data.docs[index]["group_name"],
+                              //     groupid: data.docs[index]["group_id"],
+                              //   ),
+                              // ));
+                            },
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 18.0,
+                              child: ClipOval(
+                                child: Image.asset(
+                                  "images/profile_pic.png",
+                                ),
                               ),
                             ),
-                          ),
-                          title: Text(
-                            "${connected_user_list[index]["username"]}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17.0,
+                            title: Text(
+                              "${connected_user_list[index]["username"]}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17.0,
+                              ),
                             ),
-                          ),
-                          subtitle: Text(
-                            "Email     : ${connected_user_list[index]['email']}\nNumber : ${connected_user_list[index]["userid"]}" ,
-
-                            style: TextStyle(
-                              fontSize: 14.0,
+                            subtitle: Text(
+                              "Email     : ${connected_user_list[index]['email']}\nNumber : ${connected_user_list[index]["userid"]}",
+                              style: TextStyle(
+                                fontSize: 14.0,
+                              ),
                             ),
-                          ),
-                          isThreeLine: true,
-
-                          trailing: Text(
-
-                            "Active",
-                            style: const TextStyle(
-                              color: Colors.green,
-                              fontSize: 13,
-                            ),
-                          ),
-                        );
+                            isThreeLine: true,
+                            trailing: (connected_user_list[index]['status'] ==
+                                    "Online")
+                                ? Text(
+                                    "${connected_user_list[index]['status']}",
+                                    style: const TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 13,
+                                    ),
+                                  )
+                                : Text(
+                                    "${connected_user_list[index]['status']}",
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 13,
+                                    ),
+                                  ));
                       },
                     ),
                   ),
                 ],
               ),
-
             );
-          }
-          else {
+          } else {
             return CircularProgressIndicator();
           }
         });

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:link_chat_app/screens/SettingsScreen.dart';
 import 'package:link_chat_app/screens/calls.dart';
 import 'package:link_chat_app/screens/chats.dart';
@@ -48,6 +49,12 @@ Future main() async {
       loggedin = false;
     }
   });
+
+  // setting the active status of the user
+  final storage = new FlutterSecureStorage();
+  var userid = await storage.read(key: "number");
+  FirebaseFirestore.instance.collection('user').doc(userid).update({'status': 'Online'});
+
 
   runApp(const MyApp());
 }
@@ -103,17 +110,40 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   var screens = [Chats(), Calls(), People(), SettingsScreen()];
 
   int _selectedIndex = 0;
+  final storage = new FlutterSecureStorage();
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
 
+  // setting the active status of the user
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    var userid = await storage.read(key: "number");
+    if (state == AppLifecycleState.resumed){
+      print("The user is online");
+      FirebaseFirestore.instance.collection('user').doc(userid).update({'status': 'Online'});
+
+    }
+    //TODO: set status to online here in firestore
+    else{
+      print("The user is offline");
+      FirebaseFirestore.instance.collection('user').doc(userid).update({'status': 'Offline'});
+
+    }
+    //TODO: set status to offline here in firestore
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

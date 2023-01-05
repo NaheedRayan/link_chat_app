@@ -58,7 +58,8 @@ For encryption key download this library
 
 ### dependencies:
 ``flutter:``
-* sdk: flutter
+  * sdk: flutter
+<br> 
 ``The following adds the Cupertino Icons font to your application.
 Use with the CupertinoIcons class for iOS style icons.``
   * cupertino_icons: ^1.0.2
@@ -84,10 +85,10 @@ Use with the CupertinoIcons class for iOS style icons.``
   * intl_phone_field: ^3.1.0
 
 ``Timestamp``
-    intl: ^0.17.0
+  * intl: ^0.17.0
 
 ``for settings_ui``
-    flutter_settings_screens: ^0.3.0-null-safety
+  * flutter_settings_screens: ^0.3.0-null-safety
 
 <br>
 

@@ -56,42 +56,46 @@ For encryption key download this library
 - [FastRsa library] (https://pub.dev/packages/fast_rsa)  → Used
 
 
-dependencies:
-flutter:
-sdk: flutter
-The following adds the Cupertino Icons font to your application.
-Use with the CupertinoIcons class for iOS style icons.
-cupertino_icons: ^1.0.2
-cupertino_list_tile: ^0.2.1
-For firestore…………..
-cloud_firestore: ^3.4.6
-firebase_auth: ^3.7.0
-firebase_storage: ^10.3.7
-firebase_core: ^1.21.1
-cloud_functions: ^3.3.6
+### dependencies:
+``flutter:``
+    sdk: flutter
+``The following adds the Cupertino Icons font to your application.
+Use with the CupertinoIcons class for iOS style icons.``
+    cupertino_icons: ^1.0.2
+    cupertino_list_tile: ^0.2.1
+    For firestore…………..
+    cloud_firestore: ^3.4.6
+    firebase_auth: ^3.7.0
+    firebase_storage: ^10.3.7
+    firebase_core: ^1.21.1
+    cloud_functions: ^3.3.6
 
-For the pop up
-fluttertoast: ^8.0.9
+``For the pop up``
+    fluttertoast: ^8.0.9
 
-For encryption
-asn1lib: ^1.1.0
-fast_rsa: ^3.4.7
+``For encryption``
+    asn1lib: ^1.1.0
+    fast_rsa: ^3.4.7
 
-For saving private key in shared preferences
-flutter_secure_storage: ^6.0.0
+``For saving private key in shared preferences``
+    flutter_secure_storage: ^6.0.0
 
-For flag
-intl_phone_field: ^3.1.0
+``For flag``
+    intl_phone_field: ^3.1.0
 
-Timestamp
-intl: ^0.17.0
+``Timestamp``
+    intl: ^0.17.0
 
-for settings_ui
-flutter_settings_screens: ^0.3.0-null-safety
+``for settings_ui``
+    flutter_settings_screens: ^0.3.0-null-safety
 
-## For database
+<br>
 
-Database info will be added soon…
+### For database Architecture 
+## you can use this as a reference to make database for this app
+![](screenshots/14.png)
+![](screenshots/15.png)
+
 
 ## Getting Started with flutter
 

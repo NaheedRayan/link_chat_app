@@ -26,29 +26,29 @@ There can be  7 users max in a group. Cause  the encrypted message limitations. 
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/1.png?raw=true" width="338" height="600" title="Github Logo">
 
 ## Welcome screen
-![](screenshots/2.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/2.png?raw=true" width="338" height="600" title="Github Logo">
 ## Sign in page
-![](screenshots/3.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/3.png?raw=true" width="338" height="600" title="Github Logo">
 ## Sign up page
-![](screenshots/4.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/4.png?raw=true" width="338" height="600" title="Github Logo">
 ## Otp verification
-![](screenshots/5.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/5.png?raw=true" width="338" height="600" title="Github Logo">
 ## Homepage
-![](screenshots/6.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/6.png?raw=true" width="338" height="600" title="Github Logo">
 ## chat ui
-![](screenshots/7.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/7.png?raw=true" width="338" height="600" title="Github Logo">
 ## Adding friend
-![](screenshots/8.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/8.png?raw=true" width="338" height="600" title="Github Logo">
 ## Seeing active and connected people
-![](screenshots/9.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/9.png?raw=true" width="338" height="600" title="Github Logo">
 ## Settings page
-![](screenshots/10.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/10.png?raw=true" width="338" height="600" title="Github Logo">
 ## Profile screen
-![](screenshots/11.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/11.png?raw=true" width="338" height="600" title="Github Logo">
 ## Private key that can be modified in this page for security
-![](screenshots/12.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/12.png?raw=true" width="338" height="600" title="Github Logo">
 ## Privacy terms page
-![](screenshots/13.png)
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/13.png?raw=true" width="338" height="600" title="Github Logo">
 <br>
 
 # Libraries that we have used in this chat app 

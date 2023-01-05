@@ -27,28 +27,40 @@ There can be  7 users max in a group. Cause  the encrypted message limitations. 
 
 ## Welcome screen
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/2.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## Sign in page
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/3.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## Sign up page
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/4.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## Otp verification
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/5.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## Homepage
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/6.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## chat ui
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/7.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## Adding friend
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/8.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## Seeing active and connected people
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/9.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## Settings page
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/10.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## Profile screen
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/11.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## Private key that can be modified in this page for security
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/12.png?raw=true" width="338" height="600" title="Github Logo">
+
 ## Privacy terms page
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/13.png?raw=true" width="338" height="600" title="Github Logo">
+
 <br>
 
 # Libraries that we have used in this chat app 

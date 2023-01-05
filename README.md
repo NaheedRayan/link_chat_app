@@ -93,8 +93,9 @@ Use with the CupertinoIcons class for iOS style icons.``
 
 ### For database Architecture 
 ## you can use this as a reference to make database for this app
-![](screenshots/14.png)
-![](screenshots/15.png)
+![](screenshots/14.jpg)
+
+![](screenshots/15.jpg)
 
 
 ## Getting Started with flutter

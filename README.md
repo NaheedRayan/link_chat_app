@@ -111,6 +111,17 @@ Use with the CupertinoIcons class for iOS style icons.``
 
 ![](screenshots/15.jpg)
 
+<br>
+
+# Features 
+* User can create group to share messages 
+* User can add multiple people into the group 
+* Users active status All  user 
+* messages are Encrypted by RSA algorithm 
+* User can delete the Private key to secure his messages 
+* User can copy & move his private key from the app 
+* We have no-sql based database to keep information
+#
 
 ## Getting Started with flutter
 

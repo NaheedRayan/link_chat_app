@@ -23,6 +23,7 @@ There can be  7 users max in a group. Cause  the encrypted message limitations. 
 # Link Chat APP Screen shot 
 
 ## Splash screen
+<img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/1.png?raw=true" width="300" height="400" title="Github Logo">
 ![](screenshots/1.png)
 ## Welcome screen
 ![](screenshots/2.png)

@@ -3,8 +3,8 @@
 A new Flutter project to create a group based chat app with end to end encryption. This is a RSA encryption based chat app.
 With this app you can communicate with anyone safely..Your private key can be removed from this app anytime if you feel threatened to make all your chats un readable..
 Because of RSA generated key the massages in a group is encrypted and nobody can access that info from outside or in the database.
-
-## Leave a star if U like it 😀
+#
+## Leave a star if U like it 😀 ##
 <br>
 
 # Why are we calling this a Group based Chat app?
@@ -13,11 +13,12 @@ In this chat app we have gone with an approach that is based on groups. To start
 They have to create a group first then add members to it. They have to use their phone number to add friends.
 This group method is used for all one to one chat or one to many chats…
 We have used firebase as our database and authentication.
-
+#
 # How many users can be in the same group?
 
 There can be  7 users max in a group. Cause  the encrypted message limitations. If a user send message in 7 users group then the message will be 27 times in the database.
 
+#
 <br>
 
 # Link Chat APP Screen shot 
@@ -61,6 +62,7 @@ There can be  7 users max in a group. Cause  the encrypted message limitations. 
 ## Privacy terms page
 <img src="https://github.com/NaheedRayan/link_chat_app/blob/master/screenshots/13.png?raw=true" width="338" height="600" title="Github Logo">
 
+#
 <br>
 
 # Libraries that we have used in this chat app 
@@ -103,6 +105,7 @@ Use with the CupertinoIcons class for iOS style icons.``
 ``for settings_ui``
   * flutter_settings_screens: ^0.3.0-null-safety
 
+#
 <br>
 
 # For database Architecture 
@@ -110,6 +113,7 @@ Use with the CupertinoIcons class for iOS style icons.``
 ![](screenshots/14.jpg)
 
 ![](screenshots/15.jpg)
+#
 
 <br>
 

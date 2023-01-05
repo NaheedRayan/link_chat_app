@@ -75,8 +75,10 @@ For encryption key download this library
 ``flutter:``
   * sdk: flutter
 <br> 
+
 ``The following adds the Cupertino Icons font to your application.
 Use with the CupertinoIcons class for iOS style icons.``
+
   * cupertino_icons: ^1.0.2
   * cupertino_list_tile: ^0.2.1
   * For firestore…………..
@@ -120,12 +122,14 @@ Use with the CupertinoIcons class for iOS style icons.``
 # Features 
 * User can create group to share messages 
 * User can add multiple people into the group 
-* Users active status All  user 
-* messages are Encrypted by RSA algorithm 
+* Users active status  
+* All  user messages are Encrypted by RSA algorithm 
 * User can delete the Private key to secure his messages 
 * User can copy & move his private key from the app 
 * We have no-sql based database to keep information
 #
+
+
 
 ## Getting Started with flutter
 

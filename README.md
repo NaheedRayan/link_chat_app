@@ -58,30 +58,30 @@ For encryption key download this library
 
 ### dependencies:
 ``flutter:``
-    *sdk: flutter
+* sdk: flutter
 ``The following adds the Cupertino Icons font to your application.
 Use with the CupertinoIcons class for iOS style icons.``
-    cupertino_icons: ^1.0.2
-    cupertino_list_tile: ^0.2.1
-    For firestore…………..
-    cloud_firestore: ^3.4.6
-    firebase_auth: ^3.7.0
-    firebase_storage: ^10.3.7
-    firebase_core: ^1.21.1
-    cloud_functions: ^3.3.6
+  * cupertino_icons: ^1.0.2
+  * cupertino_list_tile: ^0.2.1
+  * For firestore…………..
+  * cloud_firestore: ^3.4.6
+  * firebase_auth: ^3.7.0
+  * firebase_storage: ^10.3.7
+  * firebase_core: ^1.21.1
+  * cloud_functions: ^3.3.6
 
 ``For the pop up``
-    fluttertoast: ^8.0.9
+  * fluttertoast: ^8.0.9
 
 ``For encryption``
-    asn1lib: ^1.1.0
-    fast_rsa: ^3.4.7
+  * asn1lib: ^1.1.0
+  * fast_rsa: ^3.4.7
 
 ``For saving private key in shared preferences``
-    flutter_secure_storage: ^6.0.0
+  * flutter_secure_storage: ^6.0.0
 
 ``For flag``
-    intl_phone_field: ^3.1.0
+  * intl_phone_field: ^3.1.0
 
 ``Timestamp``
     intl: ^0.17.0

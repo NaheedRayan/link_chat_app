@@ -21,31 +21,32 @@ There can be  7 users max in a group. Cause  the encrypted message limitations. 
 <br>
 
 #Link Chat APP Screen shot 
-###Splash screen
+
+##Splash screen
 ![](screenshots/1.png)
-###Welcome screen
+##Welcome screen
 ![](screenshots/2.png)
-###Sign in page
+##Sign in page
 ![](screenshots/3.png)
-###Sign up page
+##Sign up page
 ![](screenshots/4.png)
-###Otp verification
+##Otp verification
 ![](screenshots/5.png)
-###Homepage
+##Homepage
 ![](screenshots/6.png)
-###chat ui
+##chat ui
 ![](screenshots/7.png)
-###Adding friend
+##Adding friend
 ![](screenshots/8.png)
-###seeing active and connected people
+##Seeing active and connected people
 ![](screenshots/9.png)
-###Settings page
+##Settings page
 ![](screenshots/10.png)
-### Profile screen
+##Profile screen
 ![](screenshots/11.png)
-### Private key that can be modified in this page for security
+##Private key that can be modified in this page for security
 ![](screenshots/12.png)
-###Privacy terms page
+##Privacy terms page
 ![](screenshots/13.png)
 <br>
 

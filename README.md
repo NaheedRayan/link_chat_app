@@ -4,6 +4,9 @@ A new Flutter project to create a group based chat app with end to end encryptio
 With this app you can communicate with anyone safely..Your private key can be removed from this app anytime if you feel threatened to make all your chats un readable..
 Because of RSA generated key the massages in a group is encrypted and nobody can access that info from outside or in the database.
 
+## Leave a star if U like it 😀
+<br>
+
 # Why are we calling this a Group based Chat app?
 
 In this chat app we have gone with an approach that is based on groups. To start communicating with anyone in this chat app. Users have to first sign up in this app with their mobile number and then they can start the process.
@@ -15,7 +18,38 @@ We have used firebase as our database and authentication.
 
 There can be  7 users max in a group. Cause  the encrypted message limitations. If a user send message in 7 users group then the message will be 27 times in the database.
 
-# Libraries that we have used in this chat app
+<br>
+
+#Link Chat APP Screen shot 
+###Splash screen
+![](screenshots/1.png)
+###Welcome screen
+![](screenshots/2.png)
+###Sign in page
+![](screenshots/3.png)
+###Sign up page
+![](screenshots/4.png)
+###Otp verification
+![](screenshots/5.png)
+###Homepage
+![](screenshots/6.png)
+###chat ui
+![](screenshots/7.png)
+###Adding friend
+![](screenshots/8.png)
+###seeing active and connected people
+![](screenshots/9.png)
+###Settings page
+![](screenshots/10.png)
+### Profile screen
+![](screenshots/11.png)
+### Private key that can be modified in this page for security
+![](screenshots/12.png)
+###Privacy terms page
+![](screenshots/13.png)
+<br>
+
+# Libraries that we have used in this chat app 
 
 For encryption key download this library
 - [FastRsa library] (https://pub.dev/packages/fast_rsa)  → Used
